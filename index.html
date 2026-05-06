@@ -10,97 +10,61 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
-<body class="bg-gray-900 text-white font-sans antialiased">
+<body class="bg-gray-900 text-white font-sans transition-colors duration-300">
+    <div class="animated-bg fixed inset-0 -z-10"></div>
 
-    <!-- Navbar -->
-    <nav class="bg-gray-800/90 backdrop-blur-md border-b border-gray-700 sticky top-0 z-50">
+    <!-- Navigation -->
+    <nav class="bg-gray-800/80 backdrop-blur-md border-b border-gray-700 sticky top-0 z-50">
         <div class="container mx-auto px-4 py-3 flex justify-between items-center">
             <div class="flex items-center gap-3">
-                <img src="https://files.catbox.moe/4lrwsy.jpeg" alt="BMC Logo" class="w-12 h-12 rounded-xl object-cover shadow-md">
-                <span class="text-3xl font-extrabold bg-gradient-to-r from-green-400 to-yellow-500 bg-clip-text text-transparent">BMC</span>
-                <span class="text-xs text-gray-400 hidden md:inline-block">Minecraft Bangladesh</span>
+                <img src="https://files.catbox.moe/4lrwsy.jpeg" class="w-10 h-10 rounded-xl">
+                <span class="text-2xl font-extrabold bg-gradient-to-r from-green-400 to-yellow-500 bg-clip-text text-transparent">BMC</span>
             </div>
             <div class="hidden md:flex gap-6">
                 <a href="#" class="nav-link active" data-page="home">Home</a>
                 <a href="#" class="nav-link" data-page="explore">Explore</a>
                 <a href="#" class="nav-link" data-page="leaderboard">Leaderboard</a>
-                <a href="#" class="nav-link" data-page="addserver">Add Server</a>
+                <a href="#" class="nav-link" data-page="addserver">Promote</a>
                 <a href="#" class="nav-link" data-page="profile">Profile</a>
             </div>
             <div class="flex gap-3">
+                <button id="darkModeToggle" class="text-xl"><i class="fas fa-moon"></i></button>
+                <button id="adminCodeBtn" class="text-yellow-400 text-xl"><i class="fas fa-lock"></i></button>
                 <button id="mobileMenuBtn" class="md:hidden text-2xl">☰</button>
             </div>
         </div>
-        <div id="mobileMenu" class="md:hidden hidden bg-gray-800 border-t border-gray-700 py-3 px-4 flex flex-col gap-3">
-            <a href="#" class="nav-link-mobile" data-page="home">Home</a>
-            <a href="#" class="nav-link-mobile" data-page="explore">Explore</a>
-            <a href="#" class="nav-link-mobile" data-page="leaderboard">Leaderboard</a>
-            <a href="#" class="nav-link-mobile" data-page="addserver">Add Server</a>
-            <a href="#" class="nav-link-mobile" data-page="profile">Profile</a>
-        </div>
+        <div id="mobileMenu" class="md:hidden hidden bg-gray-800 border-t border-gray-700 py-3 px-4 flex flex-col gap-3"></div>
     </nav>
 
-    <main id="mainContent" class="container mx-auto px-4 py-8">
+    <!-- Main Content -->
+    <main class="container mx-auto px-4 py-8">
         <!-- Home Page -->
         <div id="homePage" class="page-content">
-            <div class="text-center py-12">
-                <h1 class="text-5xl md:text-7xl font-extrabold mb-4 bg-gradient-to-r from-green-400 to-yellow-500 bg-clip-text text-transparent">Minecraft Bangladesh</h1>
-                <p class="text-lg text-gray-300 max-w-2xl mx-auto">Find the Best Minecraft Servers in Bangladesh</p>
-                <div class="mt-8 flex flex-col sm:flex-row gap-4 justify-center">
-                    <div class="relative"><input type="text" id="searchInput" placeholder="Search servers..." class="bg-gray-800 text-white rounded-full py-3 px-6 w-full sm:w-80 border border-gray-700"></div>
-                    <button id="listServerBtn" class="bg-gradient-to-r from-green-500 to-yellow-500 hover:opacity-90 text-black font-bold py-3 px-8 rounded-full transition"><i class="fas fa-plus-circle"></i> List Your Server</button>
-                </div>
+            <div class="text-center py-8">
+                <h1 class="text-5xl font-extrabold bg-gradient-to-r from-green-400 to-yellow-500 bg-clip-text text-transparent">Minecraft Bangladesh</h1>
+                <p class="text-gray-300 mt-2">Top 20 Community Servers</p>
             </div>
-            <div class="flex flex-wrap justify-center gap-6 mb-12">
-                <div class="bg-gray-800 rounded-2xl px-6 py-4 text-center"><div class="text-3xl font-bold text-yellow-400" id="totalServersCount">0</div><div class="text-sm">Servers Listed</div></div>
-                <div class="bg-gray-800 rounded-2xl px-6 py-4 text-center"><div class="text-3xl font-bold text-yellow-400" id="totalRatingsCount">0</div><div class="text-sm">Total Ratings</div></div>
+            <div id="premiumContainer" class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12"></div>
+            <div class="flex flex-wrap justify-between gap-4 mb-6">
+                <div id="categoryFilters" class="flex flex-wrap gap-2"></div>
+                <input type="text" id="searchInput" placeholder="Search server..." class="bg-gray-800 rounded-full px-4 py-2 w-64">
             </div>
-
-            <!-- Category Filters (instead of Trending) -->
-            <div class="flex flex-wrap gap-2 mb-6 justify-center">
-                <button data-cat="all" class="cat-filter active-cat bg-yellow-500 text-black px-4 py-1.5 rounded-full text-sm font-semibold">All</button>
-                <button data-cat="PvP" class="cat-filter bg-gray-800 text-gray-300 px-4 py-1.5 rounded-full text-sm">PvP</button>
-                <button data-cat="Skyblock" class="cat-filter bg-gray-800 text-gray-300 px-4 py-1.5 rounded-full text-sm">Skyblock</button>
-                <button data-cat="Lifesteal" class="cat-filter bg-gray-800 text-gray-300 px-4 py-1.5 rounded-full text-sm">Lifesteal</button>
-                <button data-cat="Headsteal" class="cat-filter bg-gray-800 text-gray-300 px-4 py-1.5 rounded-full text-sm">Headsteal</button>
-                <button data-cat="Bedwar" class="cat-filter bg-gray-800 text-gray-300 px-4 py-1.5 rounded-full text-sm">Bedwar</button>
-                <button data-cat="Peaceful" class="cat-filter bg-gray-800 text-gray-300 px-4 py-1.5 rounded-full text-sm">Peaceful</button>
-                <button data-cat="Survival" class="cat-filter bg-gray-800 text-gray-300 px-4 py-1.5 rounded-full text-sm">Survival</button>
-                <button data-cat="Parkour" class="cat-filter bg-gray-800 text-gray-300 px-4 py-1.5 rounded-full text-sm">Parkour</button>
-                <button data-cat="Practice" class="cat-filter bg-gray-800 text-gray-300 px-4 py-1.5 rounded-full text-sm">Practice</button>
-                <button data-cat="Anarchy" class="cat-filter bg-gray-800 text-gray-300 px-4 py-1.5 rounded-full text-sm">Anarchy</button>
-                <button data-cat="PvE" class="cat-filter bg-gray-800 text-gray-300 px-4 py-1.5 rounded-full text-sm">PvE</button>
-                <button data-cat="Oneblock" class="cat-filter bg-gray-800 text-gray-300 px-4 py-1.5 rounded-full text-sm">Oneblock</button>
-                <button data-cat="Factions" class="cat-filter bg-gray-800 text-gray-300 px-4 py-1.5 rounded-full text-sm">Factions</button>
-            </div>
-
-            <!-- Sort options -->
-            <div class="flex justify-end mb-4 gap-2">
-                <button id="sortPopular" class="sort-btn bg-gray-700 px-3 py-1 rounded-full text-sm">⭐ Most Rated</button>
-                <button id="sortNewest" class="sort-btn bg-gray-700 px-3 py-1 rounded-full text-sm">🆕 Newest</button>
-            </div>
-
-            <div id="serversContainer" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">${loadingIndicator()}</div>
+            <div id="serversList" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+            <div class="text-center mt-8"><button id="loadMoreBtn" class="bg-yellow-500 text-black px-6 py-2 rounded-full">Load More</button></div>
         </div>
 
-        <!-- Explore Page (same as home without search & filter) -->
-        <div id="explorePage" class="page-content hidden">${exploreTemplate()}</div>
-        <div id="leaderboardPage" class="page-content hidden">${leaderboardTemplate()}</div>
-        <div id="addserverPage" class="page-content hidden">${addServerTemplate()}</div>
-        <div id="profilePage" class="page-content hidden">${profileTemplate()}</div>
+        <!-- Other Pages (hidden initially) -->
+        <div id="explorePage" class="page-content hidden"><div id="exploreList" class="grid grid-cols-1 md:grid-cols-2 gap-6"></div></div>
+        <div id="leaderboardPage" class="page-content hidden"><div class="bg-gray-800 rounded-xl overflow-hidden"><table class="w-full"><thead class="bg-gray-700"><tr><th>Rank</th><th>Server</th><th>Category</th><th>Votes</th></tr></thead><tbody id="leaderboardBody"></tbody></table></div></div>
+        <div id="addserverPage" class="page-content hidden"><div class="max-w-2xl mx-auto bg-gray-800 rounded-2xl p-8"><h2 class="text-2xl font-bold mb-6">Promote Your Server</h2><form id="promoteForm"><div class="mb-4"><label>Server Name</label><input type="text" id="promoName" required class="w-full bg-gray-700 rounded px-3 py-2"></div><div class="mb-4"><label>IP Address</label><input type="text" id="promoIp" required class="w-full bg-gray-700 rounded px-3 py-2"></div><div class="mb-4"><label>Category</label><select id="promoCat" class="w-full bg-gray-700 rounded px-3 py-2"></select></div><div class="mb-4"><label>Description</label><textarea id="promoDesc" rows="3" class="w-full bg-gray-700 rounded px-3 py-2"></textarea></div><div class="mb-4"><label>Logo URL (Imgur/Catbox link)</label><input type="text" id="promoLogo" class="w-full bg-gray-700 rounded px-3 py-2"></div><div class="mb-4"><label>Upload Image (auto Catbox)</label><input type="file" id="promoImageUpload" accept="image/*"><button type="button" id="uploadCatboxBtn" class="mt-2 bg-purple-600 px-3 py-1 rounded text-sm">Upload to Catbox</button><span id="uploadStatus" class="text-xs ml-2"></span></div><button type="submit" class="w-full bg-yellow-500 text-black font-bold py-2 rounded">Submit Request</button></form></div></div>
+        <div id="profilePage" class="page-content hidden"><div class="max-w-4xl mx-auto"><div class="bg-gray-800 rounded-2xl p-6 mb-6 text-center"><i class="fas fa-user-circle text-6xl text-yellow-400 mb-2"></i><div class="flex justify-center mb-3"><img id="profilePicPreview" src="" class="w-24 h-24 rounded-full object-cover border-2 border-yellow-400 hidden"></div><input type="text" id="profileName" placeholder="Your Name" class="bg-gray-700 rounded px-3 py-2 text-center"><button id="uploadProfilePicBtn" class="block mx-auto mt-2 bg-gray-700 px-3 py-1 rounded text-sm">Upload Picture</button><input type="file" id="profilePicInput" class="hidden" accept="image/*"><button id="saveProfileBtn" class="mt-3 bg-yellow-500 text-black px-4 py-1 rounded">Save Profile</button></div><div id="userServersList" class="grid grid-cols-1 md:grid-cols-2 gap-6"></div></div></div>
     </main>
 
-    <script>
-        // Templates as strings (to avoid duplication)
-        function loadingIndicator() { return '<div class="text-center py-10 col-span-full"><i class="fas fa-spinner fa-pulse"></i> Loading servers...</div>'; }
-        function exploreTemplate() { return '<div class="text-center py-12"><h2 class="text-3xl font-bold">Explore Servers</h2><p class="text-gray-400">All servers in one place</p></div><div id="exploreContainer" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>'; }
-        function leaderboardTemplate() { return '<div class="text-center py-12"><h2 class="text-3xl font-bold">Leaderboard</h2><p class="text-gray-400">Top rated servers</p></div><div class="bg-gray-800 rounded-xl overflow-hidden"><table class="w-full text-left"><thead class="bg-gray-700"><tr><th>Rank</th><th>Server</th><th>Category</th><th>Avg Rating</th><th>Total Ratings</th></tr></thead><tbody id="leaderboardBody"></tbody></table></div>'; }
-        function addServerTemplate() { return `<div class="max-w-2xl mx-auto bg-gray-800 rounded-2xl p-8"><h2 class="text-2xl font-bold mb-6 text-center">Add Your Minecraft Server</h2><form id="addServerForm"><div class="mb-4"><label>Server Name *</label><input type="text" id="serverName" required class="w-full bg-gray-700 rounded-lg px-4 py-2"></div><div class="mb-4"><label>IP Address *</label><input type="text" id="serverIp" required class="w-full bg-gray-700 rounded-lg px-4 py-2"></div><div class="mb-4"><label>Category</label><select id="serverCategory" class="w-full bg-gray-700 rounded-lg px-4 py-2">${categoryOptions()}</select></div><div class="mb-4"><label>Description</label><textarea id="serverDesc" rows="3" class="w-full bg-gray-700 rounded-lg px-4 py-2"></textarea></div><div class="mb-4"><label>Logo URL (or upload image)</label><input type="text" id="serverLogo" placeholder="https://..." class="w-full bg-gray-700 rounded-lg px-4 py-2 mb-2"><div class="flex gap-3 items-center"><input type="file" id="logoUpload" accept="image/*"><button type="button" id="uploadToCatbox" class="bg-purple-600 px-3 py-1 rounded text-sm">Upload to Catbox</button><span id="uploadStatus" class="text-xs text-gray-400"></span></div></div><button type="submit" class="w-full bg-gradient-to-r from-green-500 to-yellow-500 text-black font-bold py-3 rounded-lg">Submit Server</button></form></div>`; }
-        function profileTemplate() { return '<div class="max-w-4xl mx-auto"><div class="bg-gray-800 rounded-2xl p-6 mb-6 text-center"><i class="fas fa-user-circle text-6xl text-yellow-400 mb-2"></i><h2 class="text-2xl font-bold">Your Profile</h2><p class="text-gray-400">Servers you have added</p></div><div id="userServersList" class="grid grid-cols-1 md:grid-cols-2 gap-6"></div></div>'; }
-        function categoryOptions() {
-            return `<option>PvP</option><option>Skyblock</option><option>Lifesteal</option><option>Factions</option><option>Bedwar</option><option>Peaceful</option><option>Headsteal</option><option>Survival</option><option>Parkour</option><option>Practice</option><option>Anarchy</option><option>PvE</option><option>Oneblock</option>`;
-        }
-    </script>
+    <!-- Admin Unlock Modal -->
+    <div id="adminModal" class="fixed inset-0 bg-black/70 z-50 hidden items-center justify-center">
+        <div class="bg-gray-800 rounded-2xl p-6 w-96"><h3 class="text-xl font-bold mb-3">Admin Access</h3><input type="password" id="adminCodeInput" placeholder="Enter code" class="w-full bg-gray-700 rounded px-3 py-2"><button id="submitAdminCode" class="mt-3 bg-yellow-500 text-black px-4 py-2 rounded">Unlock</button></div>
+    </div>
+
     <script src="script.js"></script>
 </body>
 </html>
