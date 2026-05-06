@@ -7,7 +7,7 @@
     <link rel="icon" type="image/jpeg" href="https://files.catbox.moe/4lrwsy.jpeg">
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
 <body class="bg-gray-900 text-white font-sans antialiased">
@@ -21,7 +21,7 @@
                 <span class="text-xs text-gray-400 hidden md:inline-block">Minecraft Bangladesh</span>
             </div>
             <div class="hidden md:flex gap-6">
-                <a href="#" class="nav-link active text-yellow-400" data-page="home">Home</a>
+                <a href="#" class="nav-link active" data-page="home">Home</a>
                 <a href="#" class="nav-link" data-page="explore">Explore</a>
                 <a href="#" class="nav-link" data-page="leaderboard">Leaderboard</a>
                 <a href="#" class="nav-link" data-page="addserver">Add Server</a>
@@ -53,55 +53,54 @@
             </div>
             <div class="flex flex-wrap justify-center gap-6 mb-12">
                 <div class="bg-gray-800 rounded-2xl px-6 py-4 text-center"><div class="text-3xl font-bold text-yellow-400" id="totalServersCount">0</div><div class="text-sm">Servers Listed</div></div>
-                <div class="bg-gray-800 rounded-2xl px-6 py-4 text-center"><div class="text-3xl font-bold text-yellow-400" id="totalVotesCount">0</div><div class="text-sm">Total Votes</div></div>
+                <div class="bg-gray-800 rounded-2xl px-6 py-4 text-center"><div class="text-3xl font-bold text-yellow-400" id="totalRatingsCount">0</div><div class="text-sm">Total Ratings</div></div>
             </div>
-            <div class="mb-6 flex flex-wrap justify-between items-center gap-3">
-                <h2 class="text-2xl font-bold">Browse All Servers</h2>
-                <div class="flex gap-2">
-                    <button id="filterAll" class="filter-chip active px-4 py-1.5 rounded-full bg-yellow-500 text-black">All</button>
-                    <button id="filterTrending" class="filter-chip px-4 py-1.5 rounded-full bg-gray-800 text-gray-300">Top Trending</button>
-                    <button id="filterNewest" class="filter-chip px-4 py-1.5 rounded-full bg-gray-800 text-gray-300">Newest</button>
-                </div>
+
+            <!-- Category Filters (instead of Trending) -->
+            <div class="flex flex-wrap gap-2 mb-6 justify-center">
+                <button data-cat="all" class="cat-filter active-cat bg-yellow-500 text-black px-4 py-1.5 rounded-full text-sm font-semibold">All</button>
+                <button data-cat="PvP" class="cat-filter bg-gray-800 text-gray-300 px-4 py-1.5 rounded-full text-sm">PvP</button>
+                <button data-cat="Skyblock" class="cat-filter bg-gray-800 text-gray-300 px-4 py-1.5 rounded-full text-sm">Skyblock</button>
+                <button data-cat="Lifesteal" class="cat-filter bg-gray-800 text-gray-300 px-4 py-1.5 rounded-full text-sm">Lifesteal</button>
+                <button data-cat="Headsteal" class="cat-filter bg-gray-800 text-gray-300 px-4 py-1.5 rounded-full text-sm">Headsteal</button>
+                <button data-cat="Bedwar" class="cat-filter bg-gray-800 text-gray-300 px-4 py-1.5 rounded-full text-sm">Bedwar</button>
+                <button data-cat="Peaceful" class="cat-filter bg-gray-800 text-gray-300 px-4 py-1.5 rounded-full text-sm">Peaceful</button>
+                <button data-cat="Survival" class="cat-filter bg-gray-800 text-gray-300 px-4 py-1.5 rounded-full text-sm">Survival</button>
+                <button data-cat="Parkour" class="cat-filter bg-gray-800 text-gray-300 px-4 py-1.5 rounded-full text-sm">Parkour</button>
+                <button data-cat="Practice" class="cat-filter bg-gray-800 text-gray-300 px-4 py-1.5 rounded-full text-sm">Practice</button>
+                <button data-cat="Anarchy" class="cat-filter bg-gray-800 text-gray-300 px-4 py-1.5 rounded-full text-sm">Anarchy</button>
+                <button data-cat="PvE" class="cat-filter bg-gray-800 text-gray-300 px-4 py-1.5 rounded-full text-sm">PvE</button>
+                <button data-cat="Oneblock" class="cat-filter bg-gray-800 text-gray-300 px-4 py-1.5 rounded-full text-sm">Oneblock</button>
+                <button data-cat="Factions" class="cat-filter bg-gray-800 text-gray-300 px-4 py-1.5 rounded-full text-sm">Factions</button>
             </div>
-            <div id="serversContainer" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"><div class="text-center py-10 col-span-full">Loading servers...</div></div>
+
+            <!-- Sort options -->
+            <div class="flex justify-end mb-4 gap-2">
+                <button id="sortPopular" class="sort-btn bg-gray-700 px-3 py-1 rounded-full text-sm">⭐ Most Rated</button>
+                <button id="sortNewest" class="sort-btn bg-gray-700 px-3 py-1 rounded-full text-sm">🆕 Newest</button>
+            </div>
+
+            <div id="serversContainer" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">${loadingIndicator()}</div>
         </div>
 
-        <!-- Explore Page (same as home but without search/filter) -->
-        <div id="explorePage" class="page-content hidden">
-            <div class="text-center py-12"><h2 class="text-3xl font-bold">Explore Servers</h2><p class="text-gray-400">All servers in one place</p></div>
-            <div id="exploreContainer" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
-        </div>
-
-        <!-- Leaderboard Page -->
-        <div id="leaderboardPage" class="page-content hidden">
-            <div class="text-center py-12"><h2 class="text-3xl font-bold">Leaderboard</h2><p class="text-gray-400">Top voted servers</p></div>
-            <div class="bg-gray-800 rounded-xl overflow-hidden"><table class="w-full text-left"><thead class="bg-gray-700"><tr><th class="py-3 px-4">Rank</th><th class="py-3 px-4">Server</th><th class="py-3 px-4">Category</th><th class="py-3 px-4">Votes</th></tr></thead><tbody id="leaderboardBody"></tbody></table></div>
-        </div>
-
-        <!-- Add Server Page with Image Upload -->
-        <div id="addserverPage" class="page-content hidden">
-            <div class="max-w-2xl mx-auto bg-gray-800 rounded-2xl p-8">
-                <h2 class="text-2xl font-bold mb-6 text-center">Add Your Minecraft Server</h2>
-                <form id="addServerForm">
-                    <div class="mb-4"><label class="block mb-2">Server Name *</label><input type="text" id="serverName" required class="w-full bg-gray-700 rounded-lg px-4 py-2"></div>
-                    <div class="mb-4"><label class="block mb-2">IP Address *</label><input type="text" id="serverIp" required class="w-full bg-gray-700 rounded-lg px-4 py-2"></div>
-                    <div class="mb-4"><label class="block mb-2">Category</label><select id="serverCategory" class="w-full bg-gray-700 rounded-lg px-4 py-2"><option>PvP</option><option>Skyblock</option><option>Lifesteal</option><option>Factions</option><option>Bedwar</option><option>Peaceful</option><option>Headsteal</option><option>Survival</option><option>Parkour</option><option>Practice</option><option>Anarchy</option><option>PvE</option><option>Oneblock</option></select></div>
-                    <div class="mb-4"><label class="block mb-2">Description</label><textarea id="serverDesc" rows="3" class="w-full bg-gray-700 rounded-lg px-4 py-2"></textarea></div>
-                    <div class="mb-4"><label class="block mb-2">Logo URL (or upload image)</label><input type="text" id="serverLogo" placeholder="https://..." class="w-full bg-gray-700 rounded-lg px-4 py-2 mb-2"><div class="flex gap-3 items-center"><input type="file" id="logoUpload" accept="image/*" class="text-sm"><button type="button" id="uploadToCatbox" class="bg-purple-600 px-3 py-1 rounded text-sm">Upload to Catbox</button><span id="uploadStatus" class="text-xs text-gray-400"></span></div></div>
-                    <button type="submit" class="w-full bg-gradient-to-r from-green-500 to-yellow-500 text-black font-bold py-3 rounded-lg transition">Submit Server</button>
-                </form>
-            </div>
-        </div>
-
-        <!-- Profile Page -->
-        <div id="profilePage" class="page-content hidden">
-            <div class="max-w-4xl mx-auto">
-                <div class="bg-gray-800 rounded-2xl p-6 mb-6 text-center"><i class="fas fa-user-circle text-6xl text-yellow-400 mb-2"></i><h2 class="text-2xl font-bold">Your Profile</h2><p class="text-gray-400">Servers you have added</p></div>
-                <div id="userServersList" class="grid grid-cols-1 md:grid-cols-2 gap-6"></div>
-            </div>
-        </div>
+        <!-- Explore Page (same as home without search & filter) -->
+        <div id="explorePage" class="page-content hidden">${exploreTemplate()}</div>
+        <div id="leaderboardPage" class="page-content hidden">${leaderboardTemplate()}</div>
+        <div id="addserverPage" class="page-content hidden">${addServerTemplate()}</div>
+        <div id="profilePage" class="page-content hidden">${profileTemplate()}</div>
     </main>
 
+    <script>
+        // Templates as strings (to avoid duplication)
+        function loadingIndicator() { return '<div class="text-center py-10 col-span-full"><i class="fas fa-spinner fa-pulse"></i> Loading servers...</div>'; }
+        function exploreTemplate() { return '<div class="text-center py-12"><h2 class="text-3xl font-bold">Explore Servers</h2><p class="text-gray-400">All servers in one place</p></div><div id="exploreContainer" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>'; }
+        function leaderboardTemplate() { return '<div class="text-center py-12"><h2 class="text-3xl font-bold">Leaderboard</h2><p class="text-gray-400">Top rated servers</p></div><div class="bg-gray-800 rounded-xl overflow-hidden"><table class="w-full text-left"><thead class="bg-gray-700"><tr><th>Rank</th><th>Server</th><th>Category</th><th>Avg Rating</th><th>Total Ratings</th></tr></thead><tbody id="leaderboardBody"></tbody></table></div>'; }
+        function addServerTemplate() { return `<div class="max-w-2xl mx-auto bg-gray-800 rounded-2xl p-8"><h2 class="text-2xl font-bold mb-6 text-center">Add Your Minecraft Server</h2><form id="addServerForm"><div class="mb-4"><label>Server Name *</label><input type="text" id="serverName" required class="w-full bg-gray-700 rounded-lg px-4 py-2"></div><div class="mb-4"><label>IP Address *</label><input type="text" id="serverIp" required class="w-full bg-gray-700 rounded-lg px-4 py-2"></div><div class="mb-4"><label>Category</label><select id="serverCategory" class="w-full bg-gray-700 rounded-lg px-4 py-2">${categoryOptions()}</select></div><div class="mb-4"><label>Description</label><textarea id="serverDesc" rows="3" class="w-full bg-gray-700 rounded-lg px-4 py-2"></textarea></div><div class="mb-4"><label>Logo URL (or upload image)</label><input type="text" id="serverLogo" placeholder="https://..." class="w-full bg-gray-700 rounded-lg px-4 py-2 mb-2"><div class="flex gap-3 items-center"><input type="file" id="logoUpload" accept="image/*"><button type="button" id="uploadToCatbox" class="bg-purple-600 px-3 py-1 rounded text-sm">Upload to Catbox</button><span id="uploadStatus" class="text-xs text-gray-400"></span></div></div><button type="submit" class="w-full bg-gradient-to-r from-green-500 to-yellow-500 text-black font-bold py-3 rounded-lg">Submit Server</button></form></div>`; }
+        function profileTemplate() { return '<div class="max-w-4xl mx-auto"><div class="bg-gray-800 rounded-2xl p-6 mb-6 text-center"><i class="fas fa-user-circle text-6xl text-yellow-400 mb-2"></i><h2 class="text-2xl font-bold">Your Profile</h2><p class="text-gray-400">Servers you have added</p></div><div id="userServersList" class="grid grid-cols-1 md:grid-cols-2 gap-6"></div></div>'; }
+        function categoryOptions() {
+            return `<option>PvP</option><option>Skyblock</option><option>Lifesteal</option><option>Factions</option><option>Bedwar</option><option>Peaceful</option><option>Headsteal</option><option>Survival</option><option>Parkour</option><option>Practice</option><option>Anarchy</option><option>PvE</option><option>Oneblock</option>`;
+        }
+    </script>
     <script src="script.js"></script>
 </body>
 </html>
