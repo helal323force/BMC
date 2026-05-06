@@ -12,18 +12,17 @@ body {
     border-bottom: 2px solid #facc15;
     padding-bottom: 4px;
 }
-.filter-chip {
+.cat-filter, .sort-btn {
     transition: all 0.2s;
     cursor: pointer;
 }
-.filter-chip.active {
+.active-cat {
     background-color: #eab308 !important;
     color: black !important;
 }
-.filter-chip:not(.active):hover {
+.cat-filter:not(.active-cat):hover, .sort-btn:hover {
     background-color: #374151;
 }
-/* Server card with large logo */
 .server-card {
     background: #1e293b;
     border-radius: 1.5rem;
@@ -41,22 +40,23 @@ body {
     border-radius: 1rem;
     border: 3px solid transparent;
     background: linear-gradient(135deg, #facc15, #22c55e) border-box;
-    -webkit-mask: 
-        linear-gradient(#fff 0 0) padding-box, 
-        linear-gradient(#fff 0 0);
+    -webkit-mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
     mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
     -webkit-mask-composite: xor;
     mask-composite: exclude;
 }
-/* gradient border effect */
-.logo-border {
-    background: linear-gradient(135deg, #facc15, #22c55e);
-    padding: 3px;
-    border-radius: 1rem;
-    display: inline-block;
+.star-rating {
+    display: inline-flex;
+    gap: 4px;
+    cursor: pointer;
 }
-.online-badge { color: #4ade80; font-weight: bold; }
-.offline-badge { color: #fb923c; }
+.star {
+    color: #4b5563;
+    transition: 0.1s;
+}
+.star.hover, .star.selected {
+    color: #facc15;
+}
 .ping-badge {
     background: #0f172a;
     padding: 2px 10px;
