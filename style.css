@@ -1,0 +1,66 @@
+/* custom styles beyond tailwind */
+body {
+    font-family: 'Inter', sans-serif;
+    background: #0a0c10;
+}
+.nav-link, .nav-link-mobile {
+    font-weight: 500;
+    transition: all 0.2s ease;
+}
+.nav-link.active {
+    color: #fbbf24;
+    border-bottom: 2px solid #fbbf24;
+    padding-bottom: 4px;
+}
+.filter-chip {
+    transition: all 0.2s ease;
+    cursor: pointer;
+}
+.filter-chip.active {
+    background-color: #eab308 !important;
+    color: black !important;
+}
+.filter-chip:not(.active):hover {
+    background-color: #374151;
+}
+.card-hover {
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.card-hover:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3), 0 8px 10px -6px rgba(0, 0, 0, 0.2);
+}
+.server-logo {
+    width: 56px;
+    height: 56px;
+    object-fit: cover;
+    border-radius: 12px;
+    background: #1f2937;
+}
+.status-online {
+    color: #10b981;
+    font-weight: bold;
+}
+.status-offline {
+    color: #f97316;
+}
+.ping-badge {
+    font-family: monospace;
+    background: #1e293b;
+    padding: 2px 8px;
+    border-radius: 20px;
+    font-size: 0.7rem;
+    display: inline-block;
+}
+/* scrollbar */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: #1e1f24; }
+::-webkit-scrollbar-thumb { background: #fbbf24; border-radius: 4px; }
+/* modal animations */
+.modal-fade {
+    animation: fadeIn 0.2s ease-out;
+}
+@keyframes fadeIn {
+    from { opacity: 0; transform: scale(0.95); }
+    to { opacity: 1; transform: scale(1); }
+}
