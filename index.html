@@ -1,0 +1,2315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
+<title>BMC RANK</title>
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Rajdhani:wght@400;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet"/>
+<style>
+:root{
+  --bg:#0a0c10;--bg2:#0e1117;--panel:#13181f;--border:#1e2a38;
+  --accent:#00e5ff;--accent2:#7c4dff;--green:#00e676;--red:#ff1744;
+  --yellow:#ffd740;--text:#c9d6e8;--dim:#5a7080;
+  --glow:0 0 14px #00e5ff55;--glow2:0 0 14px #7c4dff55;
+  --shadow:0 8px 32px rgba(0,0,0,.5);
+  --gold:#FFD700;--silver:#C0C0C0;--leather:#CD7F32;
+}
+[data-theme="light"]{
+  --bg:#eef2f7;--bg2:#e2e8f0;--panel:#fff;--border:#cbd5e1;
+  --accent:#0077cc;--accent2:#6a1fd0;--green:#16a34a;--red:#dc2626;
+  --yellow:#d97706;--text:#1e293b;--dim:#64748b;
+  --glow:0 0 14px #0077cc33;--glow2:0 0 14px #6a1fd033;
+  --shadow:0 8px 32px rgba(0,0,0,.12);
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{background:var(--bg);color:var(--text);font-family:'Rajdhani',sans-serif;min-height:100vh;overflow-x:hidden;transition:background .3s,color .3s;}
+body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(rgba(0,229,255,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(0,229,255,.03) 1px,transparent 1px);background-size:44px 44px;pointer-events:none;z-index:0;}
+[data-theme="light"] body::before{background-image:linear-gradient(rgba(0,119,204,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(0,119,204,.04) 1px,transparent 1px);}
+::-webkit-scrollbar{width:6px;}::-webkit-scrollbar-track{background:var(--bg);}::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px;}
+
+/* HEADER */
+header{position:sticky;top:0;z-index:200;background:rgba(10,12,16,.93);border-bottom:1px solid var(--border);backdrop-filter:blur(16px);}
+[data-theme="light"] header{background:rgba(238,242,247,.93);}
+.hdr{max-width:1300px;margin:0 auto;display:flex;align-items:center;gap:10px;height:62px;padding:0 16px;}
+.logo{display:flex;align-items:center;gap:10px;text-decoration:none;flex-shrink:0;}
+.logo-img-wrap{width:42px;height:42px;border-radius:9px;border:2px solid var(--accent);box-shadow:var(--glow);overflow:hidden;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,var(--accent2),var(--accent));font-family:'Press Start 2P',monospace;font-size:14px;color:#fff;}
+.logo-img-wrap img{width:100%;height:100%;object-fit:cover;}
+.logo-txt{font-family:'Press Start 2P',monospace;font-size:8px;line-height:1.8;color:var(--accent);text-shadow:var(--glow);}
+.logo-txt span{color:var(--text);}
+.hdr-search{flex:1;max-width:320px;position:relative;}
+.hdr-search input{width:100%;background:var(--panel);border:1px solid var(--border);border-radius:8px;padding:9px 13px 9px 36px;color:var(--text);font-family:'Rajdhani',sans-serif;font-size:14px;font-weight:600;outline:none;transition:border-color .2s;}
+.hdr-search input:focus{border-color:var(--accent);}
+.hdr-search input::placeholder{color:var(--dim);}
+.hdr-search-icon{position:absolute;left:11px;top:50%;transform:translateY(-50%);color:var(--dim);font-size:14px;}
+.hdr-right{display:flex;align-items:center;gap:6px;margin-left:auto;flex-shrink:0;}
+.ic-btn{width:36px;height:36px;border-radius:8px;border:1px solid var(--border);background:var(--panel);color:var(--text);cursor:pointer;font-size:15px;display:grid;place-items:center;transition:all .2s;font-family:'Rajdhani',sans-serif;}
+.ic-btn:hover{border-color:var(--accent);color:var(--accent);}
+.nav-lnk{padding:7px 12px;border-radius:7px;font-weight:700;font-size:13px;color:var(--dim);background:none;border:none;cursor:pointer;font-family:'Rajdhani',sans-serif;transition:all .2s;white-space:nowrap;}
+.nav-lnk:hover{color:var(--accent);}
+.btn-primary{background:linear-gradient(135deg,var(--accent2),var(--accent));color:#fff;border-radius:8px;padding:8px 15px;font-weight:700;border:none;cursor:pointer;font-family:'Rajdhani',sans-serif;font-size:13px;box-shadow:var(--glow2);transition:opacity .2s,transform .1s;white-space:nowrap;}
+.btn-primary:hover{opacity:.87;}
+.btn-primary:active{transform:scale(.97);}
+.avatar-btn{width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,var(--accent2),var(--accent));display:grid;place-items:center;font-weight:700;font-size:13px;color:#fff;cursor:pointer;border:2px solid var(--accent);box-shadow:var(--glow);}
+
+/* HERO */
+.hero{position:relative;z-index:1;text-align:center;padding:50px 20px 36px;}
+.hero-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(0,229,255,.1);border:1px solid rgba(0,229,255,.3);border-radius:100px;padding:5px 16px;font-size:11px;font-weight:700;letter-spacing:.1em;color:var(--accent);margin-bottom:18px;text-transform:uppercase;animation:badgePulse 2.5s infinite;}
+@keyframes badgePulse{0%,100%{box-shadow:0 0 0 0 rgba(0,229,255,.35);}60%{box-shadow:0 0 0 10px rgba(0,229,255,0);}}
+.hero h1{font-family:'Press Start 2P',monospace;font-size:clamp(11px,2.2vw,20px);line-height:1.8;margin-bottom:12px;}
+.hero h1 .grad{background:linear-gradient(90deg,var(--accent),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.hero p{font-size:15px;color:var(--dim);max-width:480px;margin:0 auto 26px;}
+.stats-row{display:flex;justify-content:center;gap:24px;flex-wrap:wrap;}
+.stat-box{text-align:center;}
+.stat-val{font-family:'Share Tech Mono',monospace;font-size:26px;color:var(--accent);text-shadow:var(--glow);}
+.stat-lbl{font-size:11px;font-weight:700;color:var(--dim);text-transform:uppercase;letter-spacing:.07em;margin-top:2px;}
+
+/* FILTER */
+.filter-wrap{position:relative;z-index:1;max-width:1300px;margin:0 auto 22px;padding:0 16px;display:flex;gap:7px;flex-wrap:wrap;}
+.tag{padding:7px 13px;background:var(--panel);border:1px solid var(--border);border-radius:7px;font-size:13px;font-weight:700;color:var(--dim);cursor:pointer;transition:all .18s;user-select:none;}
+.tag:hover,.tag.on{border-color:var(--accent);color:var(--accent);background:rgba(0,229,255,.08);box-shadow:var(--glow);}
+
+/* LAYOUT */
+main{position:relative;z-index:1;max-width:1300px;margin:0 auto;padding:0 16px 70px;display:flex;gap:20px;align-items:flex-start;}
+.content-area{flex:1;min-width:0;}
+.sec-lbl{font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--dim);margin-bottom:13px;}
+.sec-lbl em{color:var(--accent);font-style:normal;}
+
+/* TOP RANKED SECTION */
+.top-ranked-section{margin-bottom:30px;}
+.top-ranked-header{display:flex;align-items:center;gap:8px;margin-bottom:16px;}
+.top-ranked-header .crown-icon{font-size:20px;}
+.top-ranked-header .title-text{font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--dim);}
+.top-ranked-header .title-text em{color:var(--yellow);font-style:normal;}
+
+/* PREMIUM TIER (ranks 1-3) */
+.premium-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px;margin-bottom:16px;}
+
+/* TOP TIER section (ranks 4-10) */
+.top-tier-section{margin-bottom:20px;}
+.top-tier-header{display:flex;align-items:center;gap:8px;margin-bottom:12px;}
+.top-tier-header .title-text{font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--dim);}
+.top-tier-header .title-text em{color:var(--accent);font-style:normal;}
+
+/* Featured Big Card */
+.featured-big-card{
+  background:var(--panel);
+  border:1px solid rgba(124,77,255,.5);
+  border-radius:14px;
+  padding:18px;
+  cursor:pointer;
+  position:relative;
+  overflow:hidden;
+  animation:fadeUp .4s both;
+  transition:transform .15s,box-shadow .2s;
+}
+.featured-big-card::after{
+  content:'';position:absolute;inset:-1px;border-radius:15px;
+  background:linear-gradient(270deg,var(--accent),var(--accent2),#ff6b9d,var(--accent));
+  background-size:400% 400%;animation:neonAnim 3s ease infinite;z-index:-1;opacity:.6;
+}
+@keyframes neonAnim{0%{background-position:0% 50%;}50%{background-position:100% 50%;}100%{background-position:0% 50%;}}
+.featured-big-card:hover{transform:translateY(-2px);box-shadow:0 12px 40px rgba(0,0,0,.6);}
+@keyframes fadeUp{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
+
+/* Rank badge */
+.rank-badge-wrap{position:absolute;top:12px;right:12px;display:flex;align-items:center;gap:4px;}
+.rank-crown{font-size:18px;line-height:1;}
+.rank-num{font-family:'Share Tech Mono',monospace;font-size:14px;font-weight:700;}
+.rank-badge-wrap.rank-1 .rank-num{color:var(--gold);text-shadow:0 0 12px var(--gold);}
+.rank-badge-wrap.rank-2 .rank-num{color:var(--silver);text-shadow:0 0 12px var(--silver);}
+.rank-badge-wrap.rank-3 .rank-num{color:var(--leather);text-shadow:0 0 12px var(--leather);}
+
+.feat-star-label{font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;background:linear-gradient(90deg,var(--accent2),var(--accent));-webkit-background-clip:text;-webkit-text-fill-color:transparent;border:1px solid rgba(124,77,255,.4);border-radius:4px;padding:2px 6px;display:inline-block;margin-bottom:8px;}
+
+/* Card top row */
+.fbc-top{display:flex;align-items:flex-start;gap:12px;margin-bottom:10px;}
+.fbc-icon{width:54px;height:54px;border-radius:10px;border:1px solid var(--border);flex-shrink:0;background:var(--bg2);display:flex;align-items:center;justify-content:center;font-size:22px;overflow:hidden;}
+.fbc-icon img{width:100%;height:100%;object-fit:cover;border-radius:9px;}
+.fbc-info{flex:1;min-width:0;}
+.fbc-name{font-size:17px;font-weight:700;margin-bottom:2px;padding-right:60px;}
+.fbc-ip-hidden{font-family:'Share Tech Mono',monospace;font-size:11px;color:var(--dim);margin-bottom:4px;user-select:none;cursor:default;}
+.fbc-desc{font-size:12px;color:var(--dim);line-height:1.5;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;margin-bottom:10px;}
+.fbc-foot{display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
+.fbc-tags{display:flex;gap:4px;flex-wrap:wrap;flex:1;}
+.fbc-max{font-family:'Share Tech Mono',monospace;font-size:12px;color:var(--dim);flex-shrink:0;}
+.fbc-max strong{color:var(--accent);}
+
+/* Server Type Badge */
+.type-badge{display:inline-flex;align-items:center;gap:3px;padding:2px 7px;border-radius:4px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;flex-shrink:0;}
+.type-badge.java{background:rgba(255,130,0,.15);color:#ff8200;border:1px solid rgba(255,130,0,.3);}
+.type-badge.bedrock{background:rgba(0,230,118,.15);color:var(--green);border:1px solid rgba(0,230,118,.3);}
+.type-badge.crossplay{background:rgba(0,229,255,.12);color:var(--accent);border:1px solid rgba(0,229,255,.3);}
+
+/* Game Mode Badge */
+.mode-badge{display:inline-flex;align-items:center;gap:3px;padding:2px 7px;border-radius:4px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;}
+.mode-badge.survival{background:rgba(0,230,118,.12);color:var(--green);}
+.mode-badge.creative{background:rgba(124,77,255,.15);color:#b388ff;}
+.mode-badge.hardcore{background:rgba(255,23,68,.15);color:var(--red);}
+.mode-badge.adventure{background:rgba(255,215,0,.12);color:var(--yellow);}
+
+/* Vote button */
+.vote-btn-gold{background:none;border:2px solid var(--yellow);border-radius:9px;padding:6px 14px;font-family:'Rajdhani',sans-serif;font-size:14px;font-weight:700;color:var(--yellow);cursor:pointer;transition:all .18s;display:flex;align-items:center;gap:5px;flex-shrink:0;}
+.vote-btn-gold:hover{background:rgba(255,215,64,.12);}
+.vote-btn-gold.voted{background:rgba(255,215,64,.15);box-shadow:0 0 10px rgba(255,215,64,.3);}
+.vote-btn-gold.voted:hover{background:rgba(255,23,68,.12);border-color:var(--red);color:var(--red);}
+
+/* Status badge */
+.status-badge{display:flex;align-items:center;gap:4px;font-size:11px;font-weight:700;padding:4px 9px;border-radius:100px;flex-shrink:0;}
+.status-badge.on{background:rgba(0,230,118,.12);color:var(--green);}
+.status-badge.off{background:rgba(255,23,68,.12);color:var(--red);}
+.s-dot{width:6px;height:6px;border-radius:50%;background:currentColor;}
+.s-dot.blink{animation:blink 1.3s infinite;}
+@keyframes blink{0%,100%{opacity:1;}50%{opacity:.2;}}
+
+/* Tags */
+.stag{padding:3px 7px;border-radius:4px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;}
+.stag.survival,.stag.peaceful{background:rgba(0,230,118,.15);color:var(--green);}
+.stag.pvp,.stag.lifesteal{background:rgba(255,23,68,.15);color:var(--red);}
+.stag.creative{background:rgba(124,77,255,.18);color:#b388ff;}
+.stag.skyblock{background:rgba(0,229,255,.12);color:var(--accent);}
+.stag.bedwar{background:rgba(255,152,0,.15);color:#ffa726;}
+.stag.headsteal{background:rgba(236,72,153,.15);color:#f472b6;}
+.stag.version{background:rgba(100,116,139,.15);color:#94a3b8;}
+
+/* SERVER LIST ROW */
+.srv-list{display:flex;flex-direction:column;gap:8px;margin-bottom:26px;}
+.srv-row-card{background:var(--panel);border:1px solid var(--border);border-radius:10px;display:flex;align-items:center;gap:0;cursor:pointer;transition:border-color .2s,box-shadow .2s,transform .15s;position:relative;overflow:hidden;animation:fadeUp .35s both;}
+.srv-row-card:nth-child(1){animation-delay:.03s}.srv-row-card:nth-child(2){animation-delay:.06s}.srv-row-card:nth-child(3){animation-delay:.09s}.srv-row-card:nth-child(4){animation-delay:.12s}.srv-row-card:nth-child(5){animation-delay:.15s}.srv-row-card:nth-child(6){animation-delay:.18s}.srv-row-card:nth-child(7){animation-delay:.21s}.srv-row-card:nth-child(8){animation-delay:.24s}.srv-row-card:nth-child(9){animation-delay:.27s}
+.srv-row-card::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:linear-gradient(180deg,var(--accent2),var(--accent));opacity:0;transition:opacity .2s;}
+.srv-row-card:hover{border-color:rgba(0,229,255,.4);box-shadow:var(--shadow);transform:translateX(3px);}
+.srv-row-card:hover::before{opacity:1;}
+.row-rank{width:44px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-family:'Share Tech Mono',monospace;font-size:14px;font-weight:700;color:var(--dim);padding:14px 0;}
+.row-icon{width:52px;height:52px;border-radius:9px;border:1px solid var(--border);flex-shrink:0;background:var(--bg2);display:flex;align-items:center;justify-content:center;font-size:22px;overflow:hidden;margin:12px 0;}
+.row-icon img{width:100%;height:100%;object-fit:cover;border-radius:8px;}
+.row-info{flex:1;min-width:0;padding:12px 14px;}
+.row-name-line{display:flex;align-items:center;gap:7px;flex-wrap:wrap;margin-bottom:3px;}
+.row-srv-name{font-size:15px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.row-feat-badge{font-size:9px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;background:linear-gradient(90deg,var(--accent2),var(--accent));-webkit-background-clip:text;-webkit-text-fill-color:transparent;border:1px solid rgba(124,77,255,.4);border-radius:4px;padding:1px 5px;white-space:nowrap;}
+.row-ip-hidden{font-family:'Share Tech Mono',monospace;font-size:11px;color:var(--dim);margin-bottom:5px;user-select:none;cursor:default;}
+.row-desc{font-size:12px;color:var(--dim);line-height:1.45;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:420px;}
+.row-tags{display:flex;gap:4px;flex-wrap:wrap;margin-top:5px;}
+.row-stats{display:flex;flex-direction:column;align-items:flex-end;gap:7px;padding:12px 14px;flex-shrink:0;}
+.row-status{display:flex;align-items:center;gap:4px;font-size:11px;font-weight:700;padding:4px 9px;border-radius:100px;}
+.row-status.on{background:rgba(0,230,118,.12);color:var(--green);}
+.row-status.off{background:rgba(255,23,68,.12);color:var(--red);}
+.row-max{font-family:'Share Tech Mono',monospace;font-size:12px;color:var(--dim);}
+.row-max strong{color:var(--accent);}
+.row-vote-btn{background:none;border:1px solid var(--border);border-radius:6px;padding:5px 10px;font-family:'Rajdhani',sans-serif;font-size:12px;font-weight:700;color:var(--dim);cursor:pointer;transition:all .18s;display:flex;align-items:center;gap:4px;white-space:nowrap;}
+.row-vote-btn:hover{border-color:var(--yellow);color:var(--yellow);}
+.row-vote-btn.voted{border-color:var(--yellow);color:var(--yellow);background:rgba(255,215,64,.08);}
+.row-vote-btn.voted:hover{border-color:var(--red);color:var(--red);}
+
+/* TOP TIER row card (4-10) */
+.top-tier-card{background:var(--panel);border:1px solid rgba(0,229,255,.25);border-radius:10px;display:flex;align-items:center;gap:0;cursor:pointer;transition:all .2s;position:relative;overflow:hidden;margin-bottom:8px;}
+.top-tier-card:hover{border-color:rgba(0,229,255,.6);box-shadow:0 0 20px rgba(0,229,255,.12);transform:translateX(2px);}
+.top-tier-card::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--accent);opacity:0;transition:opacity .2s;}
+.top-tier-card:hover::before{opacity:1;}
+
+/* SIDEBAR */
+.sidebar{width:248px;flex-shrink:0;display:flex;flex-direction:column;gap:13px;}
+.widget{background:var(--panel);border:1px solid var(--border);border-radius:12px;padding:15px;}
+.w-title{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--dim);margin-bottom:11px;}
+.trend-list{display:flex;flex-direction:column;gap:9px;}
+.trend-item{display:flex;align-items:center;gap:9px;}
+.t-rank{font-family:'Share Tech Mono',monospace;font-size:11px;color:var(--dim);width:16px;flex-shrink:0;}
+.t-rank.g{color:var(--yellow);}
+.t-name{font-size:13px;font-weight:700;}
+.t-votes{font-size:11px;color:var(--dim);}
+.ver-list{display:flex;flex-direction:column;gap:6px;}
+.ver-row{display:flex;justify-content:space-between;align-items:center;font-size:13px;font-weight:600;padding:4px 0;border-bottom:1px solid var(--border);}
+.ver-row:last-child{border-bottom:none;}
+.ver-cnt{font-family:'Share Tech Mono',monospace;font-size:11px;color:var(--dim);}
+.comm-links{display:flex;flex-direction:column;gap:8px;}
+.comm-link-btn{display:flex;align-items:center;gap:9px;padding:10px 12px;border-radius:9px;border:1px solid var(--border);background:var(--bg);text-decoration:none;color:var(--text);font-weight:700;font-size:13px;transition:all .2s;}
+.comm-link-btn:hover{border-color:var(--accent);background:rgba(0,229,255,.06);}
+.comm-link-btn .cl-icon{width:28px;height:28px;border-radius:6px;display:grid;place-items:center;font-size:16px;flex-shrink:0;}
+.comm-link-btn.discord .cl-icon{background:rgba(88,101,242,.2);}
+.comm-link-btn.facebook .cl-icon{background:rgba(24,119,242,.2);}
+.comm-link-placeholder{font-size:12px;color:var(--dim);text-align:center;padding:6px;font-style:italic;}
+
+/* PAGINATION */
+.pager{display:flex;justify-content:center;gap:5px;margin-top:8px;}
+.pg{width:33px;height:33px;background:var(--panel);border:1px solid var(--border);border-radius:6px;color:var(--dim);font-family:'Rajdhani',sans-serif;font-size:13px;font-weight:700;cursor:pointer;display:grid;place-items:center;transition:all .18s;}
+.pg:hover,.pg.on{border-color:var(--accent);color:var(--accent);background:rgba(0,229,255,.08);}
+
+/* MODALS */
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,.78);z-index:500;display:none;place-items:center;padding:16px;backdrop-filter:blur(5px);}
+.overlay.show{display:grid;}
+.modal{background:var(--panel);border:1px solid var(--border);border-radius:16px;padding:26px;width:100%;max-width:520px;max-height:90vh;overflow-y:auto;position:relative;animation:mIn .22s both;}
+@keyframes mIn{from{opacity:0;transform:scale(.93);}to{opacity:1;transform:scale(1);}}
+.modal h2{font-family:'Press Start 2P',monospace;font-size:10px;color:var(--accent);margin-bottom:18px;text-shadow:var(--glow);}
+.cls-btn{position:absolute;top:13px;right:15px;background:none;border:none;color:var(--dim);font-size:20px;cursor:pointer;line-height:1;transition:color .2s;}
+.cls-btn:hover{color:var(--red);}
+.fg{margin-bottom:13px;}
+.fg label{display:block;font-size:12px;font-weight:700;color:var(--dim);margin-bottom:5px;text-transform:uppercase;letter-spacing:.06em;}
+.fg input,.fg textarea,.fg select{width:100%;background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:9px 12px;color:var(--text);font-family:'Rajdhani',sans-serif;font-size:14px;font-weight:600;outline:none;transition:border-color .2s;}
+.fg input:focus,.fg textarea:focus,.fg select:focus{border-color:var(--accent);}
+.fg textarea{resize:vertical;min-height:75px;}
+.fg select option{background:var(--panel);}
+.mfoot{display:flex;gap:9px;margin-top:16px;}
+.btn-sec{flex:1;background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:10px;color:var(--dim);font-family:'Rajdhani',sans-serif;font-size:14px;font-weight:700;cursor:pointer;transition:all .2s;}
+.btn-sec:hover{border-color:var(--red);color:var(--red);}
+.btn-sub{flex:2;background:linear-gradient(135deg,var(--accent2),var(--accent));border:none;border-radius:8px;padding:10px;color:#fff;font-family:'Rajdhani',sans-serif;font-size:14px;font-weight:700;cursor:pointer;box-shadow:var(--glow2);transition:opacity .2s;}
+.btn-sub:hover{opacity:.85;}
+.msg-box{padding:9px 13px;border-radius:8px;font-size:13px;font-weight:700;margin-bottom:11px;display:none;}
+.msg-box.ok{background:rgba(0,230,118,.15);color:var(--green);border:1px solid rgba(0,230,118,.3);display:block;}
+.msg-box.err{background:rgba(255,23,68,.15);color:var(--red);border:1px solid rgba(255,23,68,.3);display:block;}
+.tabs2{display:flex;gap:4px;margin-bottom:16px;}
+.tab2{flex:1;padding:9px;border-radius:7px;border:1px solid var(--border);background:none;color:var(--dim);font-family:'Rajdhani',sans-serif;font-size:13px;font-weight:700;cursor:pointer;transition:all .2s;}
+.tab2.on{background:rgba(0,229,255,.1);border-color:var(--accent);color:var(--accent);}
+
+/* SERVER TYPE SELECTOR */
+.server-type-wrap{display:flex;gap:7px;margin-top:6px;}
+.stype-btn{flex:1;padding:10px 6px;border-radius:9px;border:2px solid var(--border);background:var(--bg);cursor:pointer;font-family:'Rajdhani',sans-serif;font-size:13px;font-weight:700;color:var(--dim);transition:all .2s;text-align:center;}
+.stype-btn:hover{border-color:var(--accent);}
+.stype-btn.sel.java{border-color:#ff8200;color:#ff8200;background:rgba(255,130,0,.1);}
+.stype-btn.sel.bedrock{border-color:var(--green);color:var(--green);background:rgba(0,230,118,.1);}
+.stype-btn.sel.crossplay{border-color:var(--accent);color:var(--accent);background:rgba(0,229,255,.1);}
+
+/* IP VISIBILITY TOGGLE */
+.vis-toggle-wrap{display:flex;gap:7px;margin-top:6px;}
+.vis-btn{flex:1;padding:8px;border-radius:8px;border:2px solid var(--border);background:var(--bg);cursor:pointer;font-family:'Rajdhani',sans-serif;font-size:13px;font-weight:700;color:var(--dim);transition:all .2s;text-align:center;}
+.vis-btn.sel.pub{border-color:var(--green);color:var(--green);background:rgba(0,230,118,.1);}
+.vis-btn.sel.priv{border-color:var(--red);color:var(--red);background:rgba(255,23,68,.1);}
+
+/* IP FIELDS DYNAMIC */
+.ip-fields{display:none;}
+.ip-fields.show{display:block;}
+
+/* CATEGORY MULTI SELECT */
+.cat-picker{display:flex;flex-wrap:wrap;gap:6px;}
+.cat-chip{padding:6px 11px;background:var(--bg);border:1px solid var(--border);border-radius:6px;font-size:12px;font-weight:700;color:var(--dim);cursor:pointer;transition:all .18s;user-select:none;}
+.cat-chip:hover{border-color:var(--accent);color:var(--accent);}
+.cat-chip.sel{border-color:var(--accent);color:var(--accent);background:rgba(0,229,255,.1);}
+.cat-note{font-size:11px;color:var(--dim);margin-top:5px;font-style:italic;}
+
+/* DRAG & DROP UPLOAD */
+.drop-zone{border:2px dashed var(--border);border-radius:10px;padding:20px;text-align:center;cursor:pointer;transition:all .2s;background:var(--bg);position:relative;}
+.drop-zone:hover,.drop-zone.drag-over{border-color:var(--accent);background:rgba(0,229,255,.05);}
+.drop-zone input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%;}
+.drop-zone .dz-icon{font-size:28px;margin-bottom:7px;}
+.drop-zone .dz-text{font-size:13px;font-weight:700;color:var(--dim);}
+.drop-zone .dz-sub{font-size:11px;color:var(--dim);margin-top:3px;opacity:.7;}
+.drop-preview{display:flex;align-items:center;gap:10px;padding:9px 12px;background:var(--bg);border:1px solid var(--border);border-radius:8px;margin-top:8px;}
+.drop-preview img{width:40px;height:40px;border-radius:7px;object-fit:cover;border:1px solid var(--border);}
+.drop-preview-name{flex:1;font-size:12px;font-weight:700;color:var(--text);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.drop-preview-rm{background:none;border:none;color:var(--red);cursor:pointer;font-size:16px;padding:0 4px;line-height:1;}
+
+/* ADMIN PANEL */
+.admin-wrap{position:fixed;inset:0;background:var(--bg);z-index:400;overflow-y:auto;display:none;}
+.admin-wrap.show{display:block;}
+.admin-hdr{background:var(--panel);border-bottom:1px solid var(--border);padding:14px 22px;display:flex;align-items:center;gap:12px;position:sticky;top:0;z-index:10;}
+.admin-hdr h1{font-family:'Press Start 2P',monospace;font-size:9px;color:var(--accent);text-shadow:var(--glow);}
+.admin-body{max-width:1100px;margin:0 auto;padding:22px 16px;}
+.atabs{display:flex;gap:6px;margin-bottom:22px;flex-wrap:wrap;}
+.atab{padding:8px 16px;border-radius:8px;border:1px solid var(--border);background:var(--panel);color:var(--dim);font-family:'Rajdhani',sans-serif;font-size:13px;font-weight:700;cursor:pointer;transition:all .2s;}
+.atab.on{background:rgba(0,229,255,.1);border-color:var(--accent);color:var(--accent);}
+.asec{display:none;}
+.asec.show{display:block;}
+.srv-row{background:var(--panel);border:1px solid var(--border);border-radius:10px;padding:13px 15px;display:flex;align-items:center;gap:11px;margin-bottom:9px;flex-wrap:wrap;}
+.srv-row-info{flex:1;min-width:180px;}
+.row-name{font-size:15px;font-weight:700;}
+.row-sub{font-family:'Share Tech Mono',monospace;font-size:11px;color:var(--dim);margin-top:2px;}
+.row-desc{font-size:12px;color:var(--dim);margin-top:3px;}
+.row-btns{display:flex;gap:6px;flex-wrap:wrap;}
+.rbtn{padding:6px 11px;border-radius:6px;border:none;font-family:'Rajdhani',sans-serif;font-size:12px;font-weight:700;cursor:pointer;transition:all .2s;}
+.rbtn.approve{background:rgba(0,230,118,.2);color:var(--green);}
+.rbtn.approve:hover{background:rgba(0,230,118,.35);}
+.rbtn.decline,.rbtn.del{background:rgba(255,23,68,.2);color:var(--red);}
+.rbtn.decline:hover,.rbtn.del:hover{background:rgba(255,23,68,.35);}
+.rbtn.edit{background:rgba(0,229,255,.15);color:var(--accent);}
+.rbtn.edit:hover{background:rgba(0,229,255,.25);}
+.rbtn.ban{background:rgba(255,152,0,.2);color:#ffa726;}
+.rbtn.ban:hover{background:rgba(255,152,0,.35);}
+.rbtn.unban{background:rgba(0,230,118,.2);color:var(--green);}
+.color-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px;}
+.cpick{display:flex;flex-direction:column;gap:4px;}
+.cpick label{font-size:12px;color:var(--dim);font-weight:700;}
+.cpick input[type=color]{width:100%;height:36px;border-radius:7px;border:1px solid var(--border);background:var(--bg);cursor:pointer;padding:2px;}
+
+/* RANK select in admin */
+.rank-select-wrap{display:flex;gap:7px;flex-wrap:wrap;margin-top:6px;}
+.rank-opt{padding:8px 14px;border-radius:8px;border:2px solid var(--border);background:var(--bg);cursor:pointer;font-family:'Rajdhani',sans-serif;font-size:13px;font-weight:700;color:var(--dim);transition:all .18s;display:flex;align-items:center;gap:5px;}
+.rank-opt:hover{border-color:var(--accent);}
+.rank-opt.rank-1-opt.sel{border-color:var(--gold);color:var(--gold);background:rgba(255,215,0,.1);box-shadow:0 0 10px rgba(255,215,0,.3);}
+.rank-opt.rank-2-opt.sel{border-color:var(--silver);color:var(--silver);background:rgba(192,192,192,.1);box-shadow:0 0 10px rgba(192,192,192,.3);}
+.rank-opt.rank-3-opt.sel{border-color:var(--leather);color:var(--leather);background:rgba(205,127,50,.1);box-shadow:0 0 10px rgba(205,127,50,.3);}
+.rank-opt.rank-4-opt.sel,.rank-opt.rank-5-opt.sel,.rank-opt.rank-6-opt.sel,.rank-opt.rank-7-opt.sel,.rank-opt.rank-8-opt.sel,.rank-opt.rank-9-opt.sel,.rank-opt.rank-10-opt.sel{border-color:var(--accent);color:var(--accent);background:rgba(0,229,255,.1);}
+.rank-opt.rank-none-opt.sel{border-color:var(--dim);color:var(--text);}
+.rank-group-label{font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--dim);margin:10px 0 5px;width:100%;}
+
+/* PROFILE */
+.prof-card{background:var(--bg);border:1px solid var(--border);border-radius:12px;padding:20px;text-align:center;margin-bottom:13px;}
+.prof-av{width:66px;height:66px;border-radius:50%;background:linear-gradient(135deg,var(--accent2),var(--accent));display:grid;place-items:center;font-size:24px;font-weight:700;color:#fff;margin:0 auto 10px;border:3px solid var(--accent);box-shadow:var(--glow);}
+.prof-name{font-size:17px;font-weight:700;}
+.prof-email{font-size:13px;color:var(--dim);margin-top:2px;}
+.prof-badge{display:inline-block;margin-top:7px;padding:3px 11px;border-radius:100px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;}
+.prof-badge.admin{background:rgba(124,77,255,.2);color:var(--accent2);border:1px solid rgba(124,77,255,.4);}
+.prof-badge.user{background:rgba(0,229,255,.1);color:var(--accent);border:1px solid rgba(0,229,255,.3);}
+.prof-badge.banned{background:rgba(255,23,68,.2);color:var(--red);border:1px solid rgba(255,23,68,.4);}
+
+/* NO RESULTS */
+.no-res{text-align:center;padding:44px 20px;color:var(--dim);}
+.no-res .nr-icon{font-size:38px;margin-bottom:11px;}
+.no-res p{font-size:16px;font-weight:700;}
+.no-res small{font-size:13px;}
+
+/* TOAST */
+.toast{position:fixed;bottom:22px;right:22px;background:var(--panel);border:1px solid var(--accent);border-radius:10px;padding:11px 17px;font-size:14px;font-weight:700;color:var(--accent);box-shadow:var(--glow),var(--shadow);z-index:999;transform:translateY(80px);opacity:0;transition:all .3s;max-width:280px;pointer-events:none;}
+.toast.show{transform:translateY(0);opacity:1;}
+.toast.err{border-color:var(--red);color:var(--red);box-shadow:0 0 14px #ff174455,var(--shadow);}
+
+/* LOADER */
+.loader{display:inline-block;width:18px;height:18px;border:2px solid var(--border);border-top-color:var(--accent);border-radius:50%;animation:spin .7s linear infinite;}
+@keyframes spin{to{transform:rotate(360deg);}}
+
+/* DETAIL MODAL */
+.detail-links{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px;}
+.detail-link{display:flex;align-items:center;gap:6px;padding:8px 14px;border-radius:8px;border:1px solid var(--border);text-decoration:none;font-weight:700;font-size:13px;color:var(--text);transition:all .2s;}
+.detail-link:hover{border-color:var(--accent);color:var(--accent);}
+.detail-link.dc{border-color:rgba(88,101,242,.4);}
+.detail-link.dc:hover{border-color:#5865f2;color:#5865f2;}
+.detail-link.fb{border-color:rgba(24,119,242,.4);}
+.detail-link.fb:hover{border-color:#1877f2;color:#1877f2;}
+.ip-box{background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:11px 14px;font-family:'Share Tech Mono',monospace;font-size:13px;display:flex;align-items:center;justify-content:space-between;gap:8px;margin:6px 0;}
+.ip-box .ip-copy{background:none;border:1px solid var(--border);border-radius:5px;padding:4px 9px;color:var(--accent);font-family:'Rajdhani',sans-serif;font-size:12px;font-weight:700;cursor:pointer;transition:all .2s;}
+.ip-box .ip-copy:hover{background:rgba(0,229,255,.1);}
+.ip-hidden-box{background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:11px 14px;font-family:'Share Tech Mono',monospace;font-size:13px;display:flex;align-items:center;justify-content:space-between;gap:8px;margin:10px 0;cursor:default;user-select:none;color:var(--dim);}
+
+/* DETAIL IP SECTION */
+.detail-ip-section{margin:12px 0;padding:12px;background:var(--bg);border:1px solid var(--border);border-radius:10px;}
+.detail-ip-row{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:5px 0;border-bottom:1px solid var(--border);font-size:13px;}
+.detail-ip-row:last-child{border-bottom:none;}
+.detail-ip-label{font-size:11px;font-weight:700;color:var(--dim);text-transform:uppercase;letter-spacing:.06em;flex-shrink:0;}
+.detail-ip-val{font-family:'Share Tech Mono',monospace;color:var(--accent);font-size:12px;flex:1;text-align:right;margin:0 6px;}
+
+/* MOTD display */
+.motd-box{background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:10px 14px;font-family:'Share Tech Mono',monospace;font-size:12px;line-height:1.7;margin:6px 0;min-height:36px;color:var(--text);}
+.motd-loading{display:flex;align-items:center;gap:8px;color:var(--dim);font-size:12px;}
+
+/* Player count live */
+.live-players{display:flex;align-items:center;gap:8px;padding:9px 14px;background:var(--bg);border:1px solid var(--border);border-radius:8px;margin:6px 0;}
+.live-bar-wrap{flex:1;background:var(--bg2);border-radius:4px;height:6px;overflow:hidden;}
+.live-bar{height:100%;background:linear-gradient(90deg,var(--green),var(--accent));border-radius:4px;transition:width .5s;}
+.live-count{font-family:'Share Tech Mono',monospace;font-size:13px;color:var(--green);font-weight:700;white-space:nowrap;}
+
+/* Info grid in detail */
+.info-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin:12px 0;}
+.info-cell{background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:10px 12px;}
+.info-cell-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--dim);margin-bottom:4px;}
+.info-cell-val{font-size:14px;font-weight:700;color:var(--text);}
+
+/* Banned user overlay */
+.banned-overlay{position:fixed;inset:0;background:rgba(255,23,68,.08);z-index:999;display:none;place-items:center;backdrop-filter:blur(4px);}
+.banned-overlay.show{display:grid;}
+.banned-box{background:var(--panel);border:2px solid var(--red);border-radius:16px;padding:36px;text-align:center;max-width:360px;}
+.banned-box h2{font-family:'Press Start 2P',monospace;font-size:12px;color:var(--red);margin-bottom:14px;}
+
+/* ══ MOBILE RESPONSIVE ══ */
+@media(max-width:920px){main{flex-direction:column;}.sidebar{width:100%;}.premium-grid{grid-template-columns:1fr;}}
+@media(max-width:680px){
+  .row-rank{width:30px;font-size:11px;}
+  .row-icon{width:42px;height:42px;font-size:18px;margin:10px 0;}
+  .row-desc{display:none;}
+  .row-stats{padding:10px 8px;gap:5px;}
+  .row-max{display:none;}
+  .hero h1{font-size:10px;}
+  .stats-row{gap:16px;}
+  .stat-val{font-size:20px;}
+  .hdr-search{max-width:none;flex:1;}
+  .logo-txt{display:none;}
+  body{min-width:unset;}
+  .info-grid{grid-template-columns:1fr;}
+}
+@media(max-width:400px){
+  .hdr{gap:6px;padding:0 10px;}
+  .row-vote-btn span{display:none;}
+  .nav-lnk{padding:5px 8px;font-size:12px;}
+  .server-type-wrap{flex-direction:column;}
+}
+
+@media(max-width:768px){
+  body{
+    overflow-x:hidden!important;
+  }
+
+  .container,
+  .wrapper,
+  .main,
+  .hero,
+  .section,
+  .card-grid,
+  .server-grid{
+    width:100%!important;
+    max-width:100%!important;
+    overflow-x:hidden!important;
+  }
+
+  .card,
+  .server-card,
+  .panel,
+  .box{
+    width:100%!important;
+    min-width:0!important;
+  }
+
+  img{
+    max-width:100%!important;
+    height:auto!important;
+  }
+
+  .hero,
+  .topbar,
+  .navbar{
+    padding-left:12px!important;
+    padding-right:12px!important;
+  }
+}
+
+
+/* MOBILE GRID FIX */
+.server-grid,.servers,.server-list{
+display:grid !important;
+grid-template-columns:repeat(auto-fit,minmax(280px,1fr)) !important;
+gap:16px !important;
+}
+body{overflow-x:hidden !important;}
+.server-card{transition:.3s;touch-action:manipulation;}
+.server-card:active{transform:scale(.97);}
+
+/* STATUS DOT */
+.status-row{display:flex;align-items:center;gap:8px;margin-top:8px}
+.status-dot{width:10px;height:10px;border-radius:50%}
+.online{background:#00e676;box-shadow:0 0 8px #00e676}
+.offline{background:#ff1744}
+
+
+/* BIG YOUTUBE SIZE CARDS */
+.server-card{
+ aspect-ratio:16/9 !important;
+ min-height:220px;
+ background-size:cover !important;
+ background-position:center !important;
+ position:relative;
+ overflow:hidden;
+}
+.server-card::after{
+ content:"";
+ position:absolute;inset:0;
+ background:linear-gradient(to top,rgba(0,0,0,.7),rgba(0,0,0,.2));
+}
+.server-card *{position:relative;z-index:2}
+
+</style>
+</head>
+<body>
+
+<div class="toast" id="toast"></div>
+<div class="banned-overlay" id="bannedOverlay">
+  <div class="banned-box">
+    <h2>🚫 BANNED</h2>
+    <p style="color:var(--dim);font-size:14px;line-height:1.7;margin-bottom:18px">Your account has been banned from BMC Rank by an administrator.</p>
+    <button class="btn-sub" onclick="doLogout()" style="width:100%">Logout</button>
+  </div>
+</div>
+
+<!-- ══ HEADER ══ -->
+<header>
+  <div class="hdr">
+    <a class="logo" href="#" onclick="playClick()">
+      <div class="logo-img-wrap" id="logoWrap">
+        <img src="" id="logoImg" alt="BMC" style="display:none" onerror="this.style.display='none';document.getElementById('logoFallback').style.display='grid'"/>
+        <span id="logoFallback">B</span>
+      </div>
+      <div class="logo-txt"><span>BMC</span><br>RANK</div>
+    </a>
+    <div class="hdr-search">
+      <span class="hdr-search-icon">🔍</span>
+      <input type="text" id="mainSearch" placeholder="Search servers…" oninput="filterServers()"/>
+    </div>
+    <div class="hdr-right">
+      <button class="ic-btn" onclick="toggleTheme()" id="themeBtn" title="Toggle theme">🌙</button>
+      <button class="nav-lnk" onclick="openM('addModal')">+ Add Server</button>
+      <div id="authBtns">
+        <button class="btn-primary" onclick="openM('authModal')">Login / Register</button>
+      </div>
+      <div id="userMenu" style="display:none;align-items:center;gap:6px;">
+        <div class="avatar-btn" id="avatarBtn" onclick="openM('profileModal')">U</div>
+        <button class="nav-lnk" id="adminBtn" style="display:none" onclick="openAdmin()">⚙️ Admin</button>
+        <button class="nav-lnk" onclick="doLogout()">Logout</button>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- ══ HERO ══ -->
+<section class="hero">
+  <div class="hero-badge">🎮 Bangladesh Minecraft Community</div>
+  <h1>Find Your Next<br><span class="grad">Minecraft Server</span></h1>
+  <p>The most complete BD Minecraft server list. Browse, vote &amp; connect instantly.</p>
+  <div class="stats-row">
+    <div class="stat-box"><div class="stat-val" id="sTot">0</div><div class="stat-lbl">Servers</div></div>
+    <div class="stat-box"><div class="stat-val" id="sPlayers">0</div><div class="stat-lbl">Max Players</div></div>
+    <div class="stat-box"><div class="stat-val" id="sVotes">0</div><div class="stat-lbl">Total Votes</div></div>
+  </div>
+</section>
+
+<!-- ══ FILTER ══ -->
+<div class="filter-wrap" id="filterWrap">
+  <div class="tag on" data-cat="all" onclick="setTag(this)">All</div>
+  <div class="tag" data-cat="pvp" onclick="setTag(this)">PvP</div>
+  <div class="tag" data-cat="bedwar" onclick="setTag(this)">BedWar</div>
+  <div class="tag" data-cat="skyblock" onclick="setTag(this)">Skyblock</div>
+  <div class="tag" data-cat="peaceful" onclick="setTag(this)">Peaceful</div>
+  <div class="tag" data-cat="lifesteal" onclick="setTag(this)">Lifesteal</div>
+  <div class="tag" data-cat="headsteal" onclick="setTag(this)">Headsteal</div>
+  <div class="tag" data-cat="survival" onclick="setTag(this)">Survival</div>
+  <div class="tag" data-cat="java" onclick="setTag(this)">☕ Java</div>
+  <div class="tag" data-cat="bedrock" onclick="setTag(this)">🪨 Bedrock</div>
+  <div class="tag" data-cat="crossplay" onclick="setTag(this)">🔗 Crossplay</div>
+</div>
+
+<!-- ══ MAIN ══ -->
+<main>
+  <div class="content-area">
+    <!-- PREMIUM SERVERS (rank 1-3) -->
+    <div class="top-ranked-section" id="topRankedSection" style="display:none">
+      <div class="top-ranked-header">
+        <span class="crown-icon">👑</span>
+        <div class="title-text"><em>PREMIUM</em> SERVERS · Rank #1–3</div>
+      </div>
+      <div class="premium-grid" id="topRankedGrid"></div>
+    </div>
+
+    <!-- TOP SERVERS (rank 4-10) -->
+    <div class="top-tier-section" id="topTierSection" style="display:none">
+      <div class="top-tier-header">
+        <span>⭐</span>
+        <div class="title-text"><em>TOP</em> SERVERS · Rank #4–10</div>
+      </div>
+      <div id="topTierGrid"></div>
+    </div>
+
+    <div class="sec-lbl">📋 All <em>Servers</em></div>
+    <div class="srv-list" id="srvGrid">
+      <div class="no-res"><div class="loader"></div><p style="margin-top:12px">Loading servers…</p></div>
+    </div>
+    <div id="noRes" class="no-res" style="display:none">
+      <div class="nr-icon">🔍</div><p>No servers found</p><small>Try a different filter or search</small>
+    </div>
+    <div class="pager" id="pager"></div>
+  </div>
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="widget">
+      <div class="w-title">📈 Top Voted</div>
+      <div class="trend-list" id="trendList"><div class="loader"></div></div>
+    </div>
+    <div class="widget">
+      <div class="w-title">🎮 By Version</div>
+      <div class="ver-list">
+        <div class="ver-row"><span>1.21.x</span><span class="ver-cnt" id="v121">-</span></div>
+        <div class="ver-row"><span>1.20.x</span><span class="ver-cnt" id="v120">-</span></div>
+        <div class="ver-row"><span>1.19.x</span><span class="ver-cnt" id="v119">-</span></div>
+        <div class="ver-row"><span>Bedrock</span><span class="ver-cnt" id="vBed">-</span></div>
+      </div>
+    </div>
+    <div class="widget">
+      <div class="w-title">🖧 By Platform</div>
+      <div class="ver-list">
+        <div class="ver-row"><span>☕ Java</span><span class="ver-cnt" id="cntJava">-</span></div>
+        <div class="ver-row"><span>🪨 Bedrock</span><span class="ver-cnt" id="cntBedrock">-</span></div>
+        <div class="ver-row"><span>🔗 Crossplay</span><span class="ver-cnt" id="cntCrossplay">-</span></div>
+      </div>
+    </div>
+    <div class="widget">
+      <div class="w-title">🌐 Community</div>
+      <div class="comm-links" id="communityLinks">
+        <a class="comm-link-btn discord" id="discordLink" href="#" target="_blank" style="display:none">
+          <div class="cl-icon">💬</div><span>Join Discord</span>
+        </a>
+        <a class="comm-link-btn facebook" id="facebookLink" href="#" target="_blank" style="display:none">
+          <div class="cl-icon">📘</div><span>Facebook Group</span>
+        </a>
+        <div class="comm-link-placeholder" id="commPlaceholder">Links coming soon</div>
+      </div>
+    </div>
+    <div class="widget">
+      <div class="w-title">📣 Add Your Server</div>
+      <p style="font-size:13px;color:var(--dim);line-height:1.6;margin-bottom:11px">List your server free &amp; reach thousands of BD players!</p>
+      <button class="btn-primary" style="width:100%" onclick="openM('addModal')">+ Submit Server</button>
+    </div>
+  </aside>
+</main>
+
+<!-- ══ FOOTER ══ -->
+<footer style="position:relative;z-index:1;border-top:1px solid var(--border);padding:22px;text-align:center;font-size:13px;color:var(--dim);">
+  <div style="font-family:'Press Start 2P',monospace;font-size:8px;color:var(--accent);text-shadow:var(--glow);margin-bottom:7px">BMC RANK</div>
+  © 2026 BMC Rank · Not affiliated with Mojang · Built with ❤️ for Bangladesh
+</footer>
+
+<!-- ══════ MODALS ══════ -->
+
+<!-- AUTH -->
+<div class="overlay" id="authModal">
+  <div class="modal">
+    <button class="cls-btn" onclick="closeM('authModal')">✕</button>
+    <h2>🔐 Account</h2>
+    <div class="tabs2">
+      <button class="tab2 on" onclick="switchTab('login')">Login</button>
+      <button class="tab2" onclick="switchTab('register')">Register</button>
+    </div>
+    <div class="msg-box" id="authMsg"></div>
+    <div id="loginForm">
+      <div class="fg"><label>Email</label><input type="email" id="liEmail" placeholder="your@email.com"/></div>
+      <div class="fg"><label>Password</label><input type="password" id="liPass" placeholder="••••••••"/></div>
+      <div class="mfoot">
+        <button class="btn-sec" onclick="closeM('authModal')">Cancel</button>
+        <button class="btn-sub" onclick="doLogin()">Login</button>
+      </div>
+    </div>
+    <div id="regForm" style="display:none">
+      <div class="fg"><label>Username</label><input type="text" id="rgName" placeholder="CoolPlayer123"/></div>
+      <div class="fg"><label>Email</label><input type="email" id="rgEmail" placeholder="your@email.com"/></div>
+      <div class="fg"><label>Password (min 6 chars)</label><input type="password" id="rgPass" placeholder="••••••••"/></div>
+      <div class="mfoot">
+        <button class="btn-sec" onclick="closeM('authModal')">Cancel</button>
+        <button class="btn-sub" onclick="doRegister()">Register</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ADD SERVER (UPGRADED) -->
+<div class="overlay" id="addModal">
+  <div class="modal">
+    <button class="cls-btn" onclick="closeM('addModal')">✕</button>
+    <h2>➕ Add Server</h2>
+    <div class="msg-box" id="addMsg"></div>
+    <div class="fg"><label>Server Name *</label><input type="text" id="aN" placeholder="My Awesome Server"/></div>
+
+    <!-- SERVER TYPE SELECTION -->
+    <div class="fg">
+      <label>Server Type *</label>
+      <div class="server-type-wrap">
+        <button type="button" class="stype-btn java" data-type="java" onclick="pickServerType(this,'add')">☕ Java</button>
+        <button type="button" class="stype-btn bedrock" data-type="bedrock" onclick="pickServerType(this,'add')">🪨 Bedrock</button>
+        <button type="button" class="stype-btn crossplay" data-type="crossplay" onclick="pickServerType(this,'add')">🔗 Crossplay</button>
+      </div>
+      <input type="hidden" id="aServerType"/>
+    </div>
+
+    <!-- JAVA IP FIELDS -->
+    <div class="ip-fields" id="add-java-fields">
+      <div class="fg"><label>Java Server IP * <span style="color:var(--dim);font-weight:400;font-size:11px">(format: play.example.com)</span></label>
+        <input type="text" id="aJavaIP" placeholder="play.example.com"/>
+      </div>
+    </div>
+    <!-- BEDROCK IP FIELDS -->
+    <div class="ip-fields" id="add-bedrock-fields">
+      <div class="fg"><label>Bedrock IP *</label><input type="text" id="aBedrockIP" placeholder="play.example.com"/></div>
+      <div class="fg"><label>Bedrock Port *</label><input type="text" id="aBedrockPort" placeholder="19132"/></div>
+    </div>
+    <!-- CROSSPLAY IP FIELDS -->
+    <div class="ip-fields" id="add-crossplay-fields">
+      <div class="fg"><label>Java IP * <span style="color:var(--dim);font-weight:400;font-size:11px">(ip:port)</span></label>
+        <input type="text" id="aCrossJavaIP" placeholder="play.example.com"/>
+      </div>
+      <div class="fg"><label>Bedrock IP *</label><input type="text" id="aCrossBedrockIP" placeholder="play.example.com"/></div>
+      <div class="fg"><label>Bedrock Port *</label><input type="text" id="aCrossBedrockPort" placeholder="19132"/></div>
+    </div>
+
+    <!-- IP VISIBILITY -->
+    <div class="fg">
+      <label>IP Visibility</label>
+      <div class="vis-toggle-wrap">
+        <button type="button" class="vis-btn pub sel" data-vis="public" onclick="pickVisibility(this,'add')">🌍 Public</button>
+        <button type="button" class="vis-btn priv" data-vis="private" onclick="pickVisibility(this,'add')">🔒 Private</button>
+      </div>
+      <input type="hidden" id="aIpVisibility" value="public"/>
+      <div class="cat-note">Public: anyone can see the IP. Private: IP hidden from everyone.</div>
+    </div>
+
+    <div class="fg"><label>Description *</label><textarea id="aD" placeholder="Describe your server…"></textarea></div>
+
+    <!-- GAME MODE -->
+    <div class="fg">
+      <label>Game Mode *</label>
+      <select id="aGameMode">
+        <option value="">Select Game Mode</option>
+        <option value="survival">🌲 Survival</option>
+        <option value="creative">🎨 Creative</option>
+        <option value="hardcore">💀 Hardcore</option>
+        <option value="adventure">⚔️ Adventure</option>
+      </select>
+    </div>
+
+    <div class="fg">
+      <label>Primary Category * <span style="color:var(--red)">Required</span></label>
+      <div class="cat-picker" id="addCat1">
+        <div class="cat-chip" data-cat="pvp" onclick="pickCat1(this)">⚔️ PvP</div>
+        <div class="cat-chip" data-cat="bedwar" onclick="pickCat1(this)">🛏️ BedWar</div>
+        <div class="cat-chip" data-cat="skyblock" onclick="pickCat1(this)">🏝️ Skyblock</div>
+        <div class="cat-chip" data-cat="peaceful" onclick="pickCat1(this)">☮️ Peaceful</div>
+        <div class="cat-chip" data-cat="lifesteal" onclick="pickCat1(this)">❤️ Lifesteal</div>
+        <div class="cat-chip" data-cat="headsteal" onclick="pickCat1(this)">💀 Headsteal</div>
+        <div class="cat-chip" data-cat="survival" onclick="pickCat1(this)">🌲 Survival</div>
+        <div class="cat-chip" data-cat="economy" onclick="pickCat1(this)">💰 Economy</div>
+      </div>
+      <input type="hidden" id="aCat1"/>
+    </div>
+    <div class="fg">
+      <label>Secondary Category <span style="color:var(--dim)">(Optional)</span></label>
+      <div class="cat-picker" id="addCat2">
+        <div class="cat-chip" data-cat="pvp" onclick="pickCat2(this)">⚔️ PvP</div>
+        <div class="cat-chip" data-cat="bedwar" onclick="pickCat2(this)">🛏️ BedWar</div>
+        <div class="cat-chip" data-cat="skyblock" onclick="pickCat2(this)">🏝️ Skyblock</div>
+        <div class="cat-chip" data-cat="peaceful" onclick="pickCat2(this)">☮️ Peaceful</div>
+        <div class="cat-chip" data-cat="lifesteal" onclick="pickCat2(this)">❤️ Lifesteal</div>
+        <div class="cat-chip" data-cat="headsteal" onclick="pickCat2(this)">💀 Headsteal</div>
+        <div class="cat-chip" data-cat="survival" onclick="pickCat2(this)">🌲 Survival</div>
+        <div class="cat-chip" data-cat="economy" onclick="pickCat2(this)">💰 Economy</div>
+      </div>
+      <input type="hidden" id="aCat2"/>
+      <div class="cat-note">Click again to deselect optional category</div>
+    </div>
+    <div class="fg"><label>Max Players</label><input type="number" id="aMx" placeholder="100"/></div>
+    <div class="fg"><label>Version</label><input type="text" id="aVr" placeholder="1.21.x"/></div>
+    <div class="fg"><label>Discord Link</label><input type="url" id="aDc" placeholder="https://discord.gg/…"/></div>
+    <div class="fg"><label>Facebook Group</label><input type="url" id="aFb" placeholder="https://facebook.com/groups/…"/></div>
+    <div class="fg">
+      <label>Server Logo / Banner</label>
+      <div class="drop-zone" id="addDropZone" ondragover="dzDragOver(event,'addDropZone')" ondragleave="dzDragLeave('addDropZone')" ondrop="dzDrop(event,'addDropZone','addLogoPreview','aLgData')">
+        <input type="file" accept="image/*" onchange="dzFile(event,'addDropZone','addLogoPreview','aLgData')"/>
+        <div class="dz-icon">🖼️</div>
+        <div class="dz-text">Drag & Drop image here</div>
+        <div class="dz-sub">or click to choose · PNG, JPG, GIF (max 2MB)</div>
+      </div>
+      <div class="drop-preview" id="addLogoPreview" style="display:none">
+        <img id="addLogoThumb" src="" alt="preview"/>
+        <span class="drop-preview-name" id="addLogoName"></span>
+        <button class="drop-preview-rm" onclick="dzRemove('addDropZone','addLogoPreview','aLgData')">✕</button>
+      </div>
+      <input type="hidden" id="aLgData"/>
+    </div>
+    <div class="mfoot">
+      <button class="btn-sec" onclick="closeM('addModal')">Cancel</button>
+      <button class="btn-sub" onclick="submitServer()">Submit for Review</button>
+    </div>
+  </div>
+</div>
+
+<!-- PROFILE -->
+<div class="overlay" id="profileModal">
+  <div class="modal">
+    <button class="cls-btn" onclick="closeM('profileModal')">✕</button>
+    <h2>👤 My Profile</h2>
+    <div class="prof-card">
+      <div class="prof-av" id="profAv">U</div>
+      <div class="prof-name" id="profName">—</div>
+      <div class="prof-email" id="profEmail">—</div>
+      <div class="prof-badge user" id="profBadge">Player</div>
+    </div>
+    <div class="sec-lbl">My Submitted Servers</div>
+    <div id="myServersList"><div class="loader"></div></div>
+    <div class="mfoot" style="margin-top:16px">
+      <button class="btn-sec" onclick="closeM('profileModal')">Close</button>
+      <button class="btn-sub" onclick="doLogout()">Logout</button>
+    </div>
+  </div>
+</div>
+
+<!-- SERVER DETAIL -->
+<div class="overlay" id="detailModal">
+  <div class="modal" style="max-width:520px">
+    <button class="cls-btn" onclick="closeM('detailModal')">✕</button>
+    <div id="detailBody"></div>
+  </div>
+</div>
+
+<!-- APPROVE MODAL -->
+<div class="overlay" id="approveModal">
+  <div class="modal" style="max-width:440px">
+    <button class="cls-btn" onclick="closeM('approveModal')">✕</button>
+    <h2>✅ Approve Server</h2>
+    <div id="approveServerName" style="font-size:15px;font-weight:700;margin-bottom:14px;color:var(--text)"></div>
+    <div class="fg">
+      <label>Assign Rank</label>
+      <div class="rank-select-wrap">
+        <div class="rank-group-label">👑 PREMIUM (Featured top section)</div>
+        <div class="rank-opt rank-1-opt" data-rank="1" onclick="pickRank(this)">👑 <span style="color:var(--gold)">#1 Gold</span></div>
+        <div class="rank-opt rank-2-opt" data-rank="2" onclick="pickRank(this)">🥈 <span style="color:var(--silver)">#2 Silver</span></div>
+        <div class="rank-opt rank-3-opt" data-rank="3" onclick="pickRank(this)">🥉 <span style="color:var(--leather)">#3 Bronze</span></div>
+        <div class="rank-group-label">⭐ TOP (Highlighted section)</div>
+        <div class="rank-opt rank-4-opt" data-rank="4" onclick="pickRank(this)">⭐ #4</div>
+        <div class="rank-opt rank-5-opt" data-rank="5" onclick="pickRank(this)">⭐ #5</div>
+        <div class="rank-opt rank-6-opt" data-rank="6" onclick="pickRank(this)">⭐ #6</div>
+        <div class="rank-opt rank-7-opt" data-rank="7" onclick="pickRank(this)">⭐ #7</div>
+        <div class="rank-opt rank-8-opt" data-rank="8" onclick="pickRank(this)">⭐ #8</div>
+        <div class="rank-opt rank-9-opt" data-rank="9" onclick="pickRank(this)">⭐ #9</div>
+        <div class="rank-opt rank-10-opt" data-rank="10" onclick="pickRank(this)">⭐ #10</div>
+        <div class="rank-group-label">📋 NORMAL (Standard list)</div>
+        <div class="rank-opt rank-none-opt" data-rank="0" onclick="pickRank(this)">— No Rank (Normal)</div>
+      </div>
+    </div>
+    <input type="hidden" id="approveServerId"/>
+    <input type="hidden" id="approveRank" value="0"/>
+    <div class="mfoot">
+      <button class="btn-sec" onclick="closeM('approveModal')">Cancel</button>
+      <button class="btn-sub" onclick="doApprove()">Approve ✅</button>
+    </div>
+  </div>
+</div>
+
+<!-- EDIT SERVER (Admin) -->
+<div class="overlay" id="editModal">
+  <div class="modal">
+    <button class="cls-btn" onclick="closeM('editModal')">✕</button>
+    <h2>✏️ Edit Server</h2>
+    <div class="msg-box" id="editMsg"></div>
+    <input type="hidden" id="eId"/>
+    <div class="fg"><label>Name</label><input type="text" id="eN"/></div>
+
+    <!-- Server Type -->
+    <div class="fg">
+      <label>Server Type</label>
+      <div class="server-type-wrap">
+        <button type="button" class="stype-btn java" data-type="java" onclick="pickServerType(this,'edit')">☕ Java</button>
+        <button type="button" class="stype-btn bedrock" data-type="bedrock" onclick="pickServerType(this,'edit')">🪨 Bedrock</button>
+        <button type="button" class="stype-btn crossplay" data-type="crossplay" onclick="pickServerType(this,'edit')">🔗 Crossplay</button>
+      </div>
+      <input type="hidden" id="eServerType"/>
+    </div>
+    <!-- Edit Java Fields -->
+    <div class="ip-fields" id="edit-java-fields">
+      <div class="fg"><label>Java IP (ip:port)</label><input type="text" id="eJavaIP" placeholder="play.example.com"/></div>
+    </div>
+    <!-- Edit Bedrock Fields -->
+    <div class="ip-fields" id="edit-bedrock-fields">
+      <div class="fg"><label>Bedrock IP</label><input type="text" id="eBedrockIP" placeholder="play.example.com"/></div>
+      <div class="fg"><label>Bedrock Port</label><input type="text" id="eBedrockPort" placeholder="19132"/></div>
+    </div>
+    <!-- Edit Crossplay Fields -->
+    <div class="ip-fields" id="edit-crossplay-fields">
+      <div class="fg"><label>Java IP (ip:port)</label><input type="text" id="eCrossJavaIP" placeholder="play.example.com"/></div>
+      <div class="fg"><label>Bedrock IP</label><input type="text" id="eCrossBedrockIP" placeholder="play.example.com"/></div>
+      <div class="fg"><label>Bedrock Port</label><input type="text" id="eCrossBedrockPort" placeholder="19132"/></div>
+    </div>
+
+    <!-- IP Visibility -->
+    <div class="fg">
+      <label>IP Visibility</label>
+      <div class="vis-toggle-wrap">
+        <button type="button" class="vis-btn pub sel" data-vis="public" onclick="pickVisibility(this,'edit')">🌍 Public</button>
+        <button type="button" class="vis-btn priv" data-vis="private" onclick="pickVisibility(this,'edit')">🔒 Private</button>
+      </div>
+      <input type="hidden" id="eIpVisibility" value="public"/>
+    </div>
+
+    <div class="fg"><label>Description</label><textarea id="eD"></textarea></div>
+    <div class="fg">
+      <label>Game Mode</label>
+      <select id="eGameMode">
+        <option value="">Select Game Mode</option>
+        <option value="survival">🌲 Survival</option>
+        <option value="creative">🎨 Creative</option>
+        <option value="hardcore">💀 Hardcore</option>
+        <option value="adventure">⚔️ Adventure</option>
+      </select>
+    </div>
+    <div class="fg">
+      <label>Primary Category *</label>
+      <div class="cat-picker" id="editCat1">
+        <div class="cat-chip" data-cat="pvp" onclick="ePickCat1(this)">⚔️ PvP</div>
+        <div class="cat-chip" data-cat="bedwar" onclick="ePickCat1(this)">🛏️ BedWar</div>
+        <div class="cat-chip" data-cat="skyblock" onclick="ePickCat1(this)">🏝️ Skyblock</div>
+        <div class="cat-chip" data-cat="peaceful" onclick="ePickCat1(this)">☮️ Peaceful</div>
+        <div class="cat-chip" data-cat="lifesteal" onclick="ePickCat1(this)">❤️ Lifesteal</div>
+        <div class="cat-chip" data-cat="headsteal" onclick="ePickCat1(this)">💀 Headsteal</div>
+        <div class="cat-chip" data-cat="survival" onclick="ePickCat1(this)">🌲 Survival</div>
+        <div class="cat-chip" data-cat="economy" onclick="ePickCat1(this)">💰 Economy</div>
+      </div>
+      <input type="hidden" id="eCat1"/>
+    </div>
+    <div class="fg">
+      <label>Secondary Category (Optional)</label>
+      <div class="cat-picker" id="editCat2">
+        <div class="cat-chip" data-cat="pvp" onclick="ePickCat2(this)">⚔️ PvP</div>
+        <div class="cat-chip" data-cat="bedwar" onclick="ePickCat2(this)">🛏️ BedWar</div>
+        <div class="cat-chip" data-cat="skyblock" onclick="ePickCat2(this)">🏝️ Skyblock</div>
+        <div class="cat-chip" data-cat="peaceful" onclick="ePickCat2(this)">☮️ Peaceful</div>
+        <div class="cat-chip" data-cat="lifesteal" onclick="ePickCat2(this)">❤️ Lifesteal</div>
+        <div class="cat-chip" data-cat="headsteal" onclick="ePickCat2(this)">💀 Headsteal</div>
+        <div class="cat-chip" data-cat="survival" onclick="ePickCat2(this)">🌲 Survival</div>
+        <div class="cat-chip" data-cat="economy" onclick="ePickCat2(this)">💰 Economy</div>
+      </div>
+      <input type="hidden" id="eCat2"/>
+    </div>
+    <div class="fg"><label>Max Players</label><input type="number" id="eMx"/></div>
+    <div class="fg"><label>Version</label><input type="text" id="eVr"/></div>
+    <div class="fg"><label>Discord</label><input type="url" id="eDc"/></div>
+    <div class="fg"><label>Facebook</label><input type="url" id="eFb"/></div>
+    <div class="fg">
+      <label>Server Logo / Banner</label>
+      <div class="drop-zone" id="editDropZone" ondragover="dzDragOver(event,'editDropZone')" ondragleave="dzDragLeave('editDropZone')" ondrop="dzDrop(event,'editDropZone','editLogoPreview','eLgData')">
+        <input type="file" accept="image/*" onchange="dzFile(event,'editDropZone','editLogoPreview','eLgData')"/>
+        <div class="dz-icon">🖼️</div>
+        <div class="dz-text">Drag & Drop new logo</div>
+        <div class="dz-sub">Leave empty to keep current logo</div>
+      </div>
+      <div class="drop-preview" id="editLogoPreview" style="display:none">
+        <img id="editLogoThumb" src="" alt="preview"/>
+        <span class="drop-preview-name" id="editLogoName"></span>
+        <button class="drop-preview-rm" onclick="dzRemove('editDropZone','editLogoPreview','eLgData')">✕</button>
+      </div>
+      <input type="hidden" id="eLgData"/>
+      <input type="hidden" id="eLgOld"/>
+    </div>
+    <div class="fg">
+      <label>Assign Rank</label>
+      <div class="rank-select-wrap">
+        <div class="rank-group-label">👑 PREMIUM</div>
+        <div class="rank-opt rank-1-opt" data-rank="1" onclick="ePickRank(this)">👑 <span style="color:var(--gold)">#1 Gold</span></div>
+        <div class="rank-opt rank-2-opt" data-rank="2" onclick="ePickRank(this)">🥈 <span style="color:var(--silver)">#2 Silver</span></div>
+        <div class="rank-opt rank-3-opt" data-rank="3" onclick="ePickRank(this)">🥉 <span style="color:var(--leather)">#3 Bronze</span></div>
+        <div class="rank-group-label">⭐ TOP</div>
+        <div class="rank-opt rank-4-opt" data-rank="4" onclick="ePickRank(this)">⭐ #4</div>
+        <div class="rank-opt rank-5-opt" data-rank="5" onclick="ePickRank(this)">⭐ #5</div>
+        <div class="rank-opt rank-6-opt" data-rank="6" onclick="ePickRank(this)">⭐ #6</div>
+        <div class="rank-opt rank-7-opt" data-rank="7" onclick="ePickRank(this)">⭐ #7</div>
+        <div class="rank-opt rank-8-opt" data-rank="8" onclick="ePickRank(this)">⭐ #8</div>
+        <div class="rank-opt rank-9-opt" data-rank="9" onclick="ePickRank(this)">⭐ #9</div>
+        <div class="rank-opt rank-10-opt" data-rank="10" onclick="ePickRank(this)">⭐ #10</div>
+        <div class="rank-group-label">📋 NORMAL</div>
+        <div class="rank-opt rank-none-opt" data-rank="0" onclick="ePickRank(this)">— No Rank</div>
+      </div>
+      <input type="hidden" id="eRank" value="0"/>
+    </div>
+    <div class="fg"><label>Status</label><select id="eSt"><option value="online">Online</option><option value="offline">Offline</option></select></div>
+    <div class="mfoot">
+      <button class="btn-sec" onclick="closeM('editModal')">Cancel</button>
+      <button class="btn-sub" onclick="saveEdit()">Save Changes</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══ ADMIN PANEL ══ -->
+<div class="admin-wrap" id="adminPanel">
+  <div class="admin-hdr">
+    <button class="ic-btn" onclick="closeAdmin()">← Back</button>
+    <h1>⚙️ BMC Admin Panel</h1>
+    <span style="font-size:12px;color:var(--dim);margin-left:auto" id="adminWho"></span>
+  </div>
+  <div class="admin-body">
+    <div class="atabs">
+      <button class="atab on" onclick="aTab(this,'aPend')">🕐 Pending</button>
+      <button class="atab" onclick="aTab(this,'aAll')">📋 All Servers</button>
+      <button class="atab" onclick="aTab(this,'aUsers')">👥 Users</button>
+      <button class="atab" onclick="aTab(this,'aCustom')">🎨 Customize</button>
+      <button class="atab" onclick="aTab(this,'aNew')">➕ Add Server</button>
+    </div>
+
+    <div class="asec show" id="aPend">
+      <div class="sec-lbl">🕐 Pending <em>Approval</em></div>
+      <div id="pendList"><div class="loader"></div></div>
+    </div>
+    <div class="asec" id="aAll">
+      <div class="sec-lbl">📋 All <em>Servers</em></div>
+      <div id="allList"><div class="loader"></div></div>
+    </div>
+    <div class="asec" id="aUsers">
+      <div class="sec-lbl">👥 All <em>Users</em></div>
+      <div id="usersList"><div class="loader"></div></div>
+    </div>
+    <div class="asec" id="aCustom">
+      <div class="sec-lbl">🎨 <em>Customize</em></div>
+      <div class="widget" style="margin-bottom:14px">
+        <div class="w-title">Colors (Dark Theme)</div>
+        <div class="color-grid">
+          <div class="cpick"><label>Accent</label><input type="color" id="cA" value="#00e5ff" oninput="liveColors()"/></div>
+          <div class="cpick"><label>Accent 2</label><input type="color" id="cA2" value="#7c4dff" oninput="liveColors()"/></div>
+          <div class="cpick"><label>Background</label><input type="color" id="cBg" value="#0a0c10" oninput="liveColors()"/></div>
+          <div class="cpick"><label>Panel</label><input type="color" id="cPn" value="#13181f" oninput="liveColors()"/></div>
+        </div>
+        <button class="btn-sub" style="padding:9px 18px" onclick="saveColors()">💾 Save Colors</button>
+        <button class="btn-sec" style="padding:9px 18px;margin-left:7px" onclick="resetColors()">Reset</button>
+      </div>
+      <div class="widget" style="margin-bottom:14px">
+        <div class="w-title">Community Links</div>
+        <div class="fg"><label>Discord Server Link</label><input type="url" id="cfDc" placeholder="https://discord.gg/…"/></div>
+        <div class="fg"><label>Facebook Group Link</label><input type="url" id="cfFb" placeholder="https://facebook.com/groups/…"/></div>
+        <button class="btn-sub" style="padding:9px 18px" onclick="saveCommunityLinks()">💾 Save Links</button>
+      </div>
+      <div class="widget" style="margin-bottom:14px">
+        <div class="w-title">Website Logo</div>
+        <div class="fg">
+          <label>Logo Image (Drag & Drop)</label>
+          <div class="drop-zone" id="adminLogoDropZone" ondragover="dzDragOver(event,'adminLogoDropZone')" ondragleave="dzDragLeave('adminLogoDropZone')" ondrop="dzDrop(event,'adminLogoDropZone','adminLogoPreview','cfLogoData')">
+            <input type="file" accept="image/*" onchange="dzFile(event,'adminLogoDropZone','adminLogoPreview','cfLogoData')"/>
+            <div class="dz-icon">🖼️</div>
+            <div class="dz-text">Drag & Drop logo here</div>
+            <div class="dz-sub">or click to choose · PNG, JPG, SVG</div>
+          </div>
+          <div class="drop-preview" id="adminLogoPreview" style="display:none">
+            <img id="adminLogoThumb" src="" alt="preview"/>
+            <span class="drop-preview-name" id="adminLogoName"></span>
+            <button class="drop-preview-rm" onclick="dzRemove('adminLogoDropZone','adminLogoPreview','cfLogoData')">✕</button>
+          </div>
+          <input type="hidden" id="cfLogoData"/>
+        </div>
+        <button class="btn-sub" style="padding:9px 18px" onclick="saveLogo()">💾 Save Logo</button>
+      </div>
+      <div class="widget">
+        <div class="w-title">Admin Emails</div>
+        <div class="fg"><label>Add Admin Email</label><input type="email" id="newAdminE" placeholder="admin@gmail.com"/></div>
+        <button class="btn-sub" style="padding:9px 18px" onclick="addAdminEmail()">Add Admin</button>
+        <div id="adminEmailList" style="margin-top:13px"></div>
+      </div>
+    </div>
+
+    <!-- ADMIN ADD SERVER -->
+    <div class="asec" id="aNew">
+      <div class="sec-lbl">➕ Add Server <em>Directly</em></div>
+      <div class="widget">
+        <div class="msg-box" id="adminAddMsg"></div>
+        <div class="fg"><label>Name *</label><input type="text" id="daN"/></div>
+
+        <!-- Server Type -->
+        <div class="fg">
+          <label>Server Type *</label>
+          <div class="server-type-wrap">
+            <button type="button" class="stype-btn java" data-type="java" onclick="pickServerType(this,'da')">☕ Java</button>
+            <button type="button" class="stype-btn bedrock" data-type="bedrock" onclick="pickServerType(this,'da')">🪨 Bedrock</button>
+            <button type="button" class="stype-btn crossplay" data-type="crossplay" onclick="pickServerType(this,'da')">🔗 Crossplay</button>
+          </div>
+          <input type="hidden" id="daServerType"/>
+        </div>
+        <div class="ip-fields" id="da-java-fields">
+          <div class="fg"><label>Java IP (ip:port)</label><input type="text" id="daJavaIP" placeholder="play.example.com"/></div>
+        </div>
+        <div class="ip-fields" id="da-bedrock-fields">
+          <div class="fg"><label>Bedrock IP</label><input type="text" id="daBedrockIP" placeholder="play.example.com"/></div>
+          <div class="fg"><label>Bedrock Port</label><input type="text" id="daBedrockPort" placeholder="19132"/></div>
+        </div>
+        <div class="ip-fields" id="da-crossplay-fields">
+          <div class="fg"><label>Java IP (ip:port)</label><input type="text" id="daCrossJavaIP" placeholder="play.example.com"/></div>
+          <div class="fg"><label>Bedrock IP</label><input type="text" id="daCrossBedrockIP" placeholder="play.example.com"/></div>
+          <div class="fg"><label>Bedrock Port</label><input type="text" id="daCrossBedrockPort" placeholder="19132"/></div>
+        </div>
+
+        <!-- IP Visibility -->
+        <div class="fg">
+          <label>IP Visibility</label>
+          <div class="vis-toggle-wrap">
+            <button type="button" class="vis-btn pub sel" data-vis="public" onclick="pickVisibility(this,'da')">🌍 Public</button>
+            <button type="button" class="vis-btn priv" data-vis="private" onclick="pickVisibility(this,'da')">🔒 Private</button>
+          </div>
+          <input type="hidden" id="daIpVisibility" value="public"/>
+        </div>
+
+        <div class="fg"><label>Description</label><textarea id="daD"></textarea></div>
+        <div class="fg">
+          <label>Game Mode</label>
+          <select id="daGameMode">
+            <option value="">Select Game Mode</option>
+            <option value="survival">🌲 Survival</option>
+            <option value="creative">🎨 Creative</option>
+            <option value="hardcore">💀 Hardcore</option>
+            <option value="adventure">⚔️ Adventure</option>
+          </select>
+        </div>
+        <div class="fg">
+          <label>Primary Category *</label>
+          <div class="cat-picker" id="daAddCat1">
+            <div class="cat-chip" data-cat="pvp" onclick="daPickCat1(this)">⚔️ PvP</div>
+            <div class="cat-chip" data-cat="bedwar" onclick="daPickCat1(this)">🛏️ BedWar</div>
+            <div class="cat-chip" data-cat="skyblock" onclick="daPickCat1(this)">🏝️ Skyblock</div>
+            <div class="cat-chip" data-cat="peaceful" onclick="daPickCat1(this)">☮️ Peaceful</div>
+            <div class="cat-chip" data-cat="lifesteal" onclick="daPickCat1(this)">❤️ Lifesteal</div>
+            <div class="cat-chip" data-cat="headsteal" onclick="daPickCat1(this)">💀 Headsteal</div>
+            <div class="cat-chip" data-cat="survival" onclick="daPickCat1(this)">🌲 Survival</div>
+            <div class="cat-chip" data-cat="economy" onclick="daPickCat1(this)">💰 Economy</div>
+          </div>
+          <input type="hidden" id="daCat1"/>
+        </div>
+        <div class="fg">
+          <label>Secondary Category (Optional)</label>
+          <div class="cat-picker" id="daAddCat2">
+            <div class="cat-chip" data-cat="pvp" onclick="daPickCat2(this)">⚔️ PvP</div>
+            <div class="cat-chip" data-cat="bedwar" onclick="daPickCat2(this)">🛏️ BedWar</div>
+            <div class="cat-chip" data-cat="skyblock" onclick="daPickCat2(this)">🏝️ Skyblock</div>
+            <div class="cat-chip" data-cat="peaceful" onclick="daPickCat2(this)">☮️ Peaceful</div>
+            <div class="cat-chip" data-cat="lifesteal" onclick="daPickCat2(this)">❤️ Lifesteal</div>
+            <div class="cat-chip" data-cat="headsteal" onclick="daPickCat2(this)">💀 Headsteal</div>
+            <div class="cat-chip" data-cat="survival" onclick="daPickCat2(this)">🌲 Survival</div>
+            <div class="cat-chip" data-cat="economy" onclick="daPickCat2(this)">💰 Economy</div>
+          </div>
+          <input type="hidden" id="daCat2"/>
+        </div>
+        <div class="fg"><label>Max Players</label><input type="number" id="daMx" placeholder="100"/></div>
+        <div class="fg"><label>Version</label><input type="text" id="daVr" placeholder="1.21.x"/></div>
+        <div class="fg"><label>Discord</label><input type="url" id="daDc"/></div>
+        <div class="fg"><label>Facebook</label><input type="url" id="daFb"/></div>
+        <div class="fg">
+          <label>Logo / Banner</label>
+          <div class="drop-zone" id="daDropZone" ondragover="dzDragOver(event,'daDropZone')" ondragleave="dzDragLeave('daDropZone')" ondrop="dzDrop(event,'daDropZone','daLogoPreview','daLgData')">
+            <input type="file" accept="image/*" onchange="dzFile(event,'daDropZone','daLogoPreview','daLgData')"/>
+            <div class="dz-icon">🖼️</div>
+            <div class="dz-text">Drag & Drop image</div>
+            <div class="dz-sub">or click to choose</div>
+          </div>
+          <div class="drop-preview" id="daLogoPreview" style="display:none">
+            <img id="daLogoThumb" src="" alt="preview"/>
+            <span class="drop-preview-name" id="daLogoName"></span>
+            <button class="drop-preview-rm" onclick="dzRemove('daDropZone','daLogoPreview','daLgData')">✕</button>
+          </div>
+          <input type="hidden" id="daLgData"/>
+        </div>
+        <div class="fg">
+          <label>Assign Rank</label>
+          <div class="rank-select-wrap">
+            <div class="rank-group-label">👑 PREMIUM</div>
+            <div class="rank-opt rank-1-opt" data-rank="1" onclick="daPickRank(this)">👑 <span style="color:var(--gold)">#1 Gold</span></div>
+            <div class="rank-opt rank-2-opt" data-rank="2" onclick="daPickRank(this)">🥈 <span style="color:var(--silver)">#2 Silver</span></div>
+            <div class="rank-opt rank-3-opt" data-rank="3" onclick="daPickRank(this)">🥉 <span style="color:var(--leather)">#3 Bronze</span></div>
+            <div class="rank-group-label">⭐ TOP</div>
+            <div class="rank-opt rank-4-opt" data-rank="4" onclick="daPickRank(this)">⭐ #4</div>
+            <div class="rank-opt rank-5-opt" data-rank="5" onclick="daPickRank(this)">⭐ #5</div>
+            <div class="rank-opt rank-6-opt" data-rank="6" onclick="daPickRank(this)">⭐ #6</div>
+            <div class="rank-opt rank-7-opt" data-rank="7" onclick="daPickRank(this)">⭐ #7</div>
+            <div class="rank-opt rank-8-opt" data-rank="8" onclick="daPickRank(this)">⭐ #8</div>
+            <div class="rank-opt rank-9-opt" data-rank="9" onclick="daPickRank(this)">⭐ #9</div>
+            <div class="rank-opt rank-10-opt" data-rank="10" onclick="daPickRank(this)">⭐ #10</div>
+            <div class="rank-group-label">📋 NORMAL</div>
+            <div class="rank-opt rank-none-opt" data-rank="0" onclick="daPickRank(this)">— No Rank</div>
+          </div>
+          <input type="hidden" id="daRank" value="0"/>
+        </div>
+        <button class="btn-sub" style="padding:10px 22px" onclick="adminAddServer()">Add Server</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════ FIREBASE + JS ══════ -->
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getFirestore, collection, doc, getDoc, getDocs, addDoc, updateDoc, deleteDoc, query, where, orderBy, onSnapshot, serverTimestamp, increment }
+  from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged, updateProfile }
+  from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyDLKvw5tf-XPPFXD8qDyoXeXtuRQgcyRR0",
+  authDomain: "bmclist-3eefa.firebaseapp.com",
+  projectId: "bmclist-3eefa",
+  storageBucket: "bmclist-3eefa.firebasestorage.app",
+  messagingSenderId: "118914705306",
+  appId: "1:118914705306:web:332f1a49f5f774d685bc23"
+};
+const app = initializeApp(firebaseConfig);
+const db  = getFirestore(app);
+const auth= getAuth(app);
+
+let ADMIN_EMAILS = ["wingxmc1@gmail.com"];
+let currentUser = null, isAdmin = false, currentUserData = null;
+let allServers = [], activeTag = 'all', curPage = 1;
+const PER = 10;
+let userVotes = {};
+
+// ── LOAD SAVED SETTINGS ──
+function loadSettings(){
+  const ae = localStorage.getItem('bmc_admins'); if(ae) ADMIN_EMAILS=JSON.parse(ae);
+  const cl = localStorage.getItem('bmc_colors'); if(cl){ const p=JSON.parse(cl); const r=document.documentElement.style; r.setProperty('--accent',p.a); r.setProperty('--accent2',p.a2); r.setProperty('--bg',p.bg); r.setProperty('--panel',p.pn); }
+  const dc = localStorage.getItem('bmc_discord'); const fb = localStorage.getItem('bmc_facebook');
+  const lg = localStorage.getItem('bmc_logo');
+  if(dc){ const el=document.getElementById('discordLink'); el.href=dc; el.style.display='flex'; document.getElementById('commPlaceholder').style.display='none'; }
+  if(fb){ const el=document.getElementById('facebookLink'); el.href=fb; el.style.display='flex'; document.getElementById('commPlaceholder').style.display='none'; }
+  if(lg){ const img=document.getElementById('logoImg'); img.src=lg; img.style.display='block'; document.getElementById('logoFallback').style.display='none'; }
+  const th = localStorage.getItem('bmc_theme'); if(th==='light'){ document.documentElement.setAttribute('data-theme','light'); document.getElementById('themeBtn').textContent='☀️'; }
+}
+loadSettings();
+
+// ── SERVER TYPE PICKER ──
+window.pickServerType = function(el, prefix){
+  const wrap = el.closest('.server-type-wrap');
+  wrap.querySelectorAll('.stype-btn').forEach(b=>b.classList.remove('sel'));
+  el.classList.add('sel');
+  const type = el.dataset.type;
+  document.getElementById(prefix+'ServerType').value = type;
+  // Show/hide IP fields
+  ['java','bedrock','crossplay'].forEach(t=>{
+    const f = document.getElementById(`${prefix}-${t}-fields`);
+    if(f) f.classList.toggle('show', t===type);
+  });
+};
+
+// ── IP VISIBILITY PICKER ──
+window.pickVisibility = function(el, prefix){
+  const wrap = el.closest('.vis-toggle-wrap');
+  wrap.querySelectorAll('.vis-btn').forEach(b=>b.classList.remove('sel'));
+  el.classList.add('sel');
+  document.getElementById(prefix+'IpVisibility').value = el.dataset.vis;
+};
+
+// ── BUILD IP DATA FROM FORM ──
+function getIpData(prefix){
+  const type = document.getElementById(prefix+'ServerType').value;
+  const vis  = document.getElementById(prefix+'IpVisibility').value||'public';
+  let javaIP='', bedrockIP='', bedrockPort='';
+  if(type==='java'||type==='crossplay'){
+    javaIP = document.getElementById(type==='java'?`${prefix}JavaIP`:`${prefix}CrossJavaIP`).value.trim();
+  }
+  if(type==='bedrock'||type==='crossplay'){
+    bedrockIP = document.getElementById(type==='bedrock'?`${prefix}BedrockIP`:`${prefix}CrossBedrockIP`).value.trim();
+    bedrockPort = document.getElementById(type==='bedrock'?`${prefix}BedrockPort`:`${prefix}CrossBedrockPort`).value.trim();
+  }
+  return {serverType:type, ipVisibility:vis, javaIP, bedrockIP, bedrockPort};
+}
+
+// ── VALIDATE IP FIELDS ──
+function validateIpData(ipData, msgId){
+  const {serverType,javaIP,bedrockIP,bedrockPort}=ipData;
+
+  if(!serverType){
+    setMsg(msgId,'Select a server type','err');
+    return false;
+  }
+
+  if((serverType==='java'||serverType==='crossplay')&&!javaIP){
+    setMsg(msgId,'Java Server IP is required','err');
+    return false;
+  }
+
+  if((serverType==='bedrock'||serverType==='crossplay')&&!bedrockIP){
+    setMsg(msgId,'Bedrock IP is required','err');
+    return false;
+  }
+
+  if((serverType==='bedrock'||serverType==='crossplay')&&!bedrockPort){
+    setMsg(msgId,'Bedrock Port is required','err');
+    return false;
+  }
+
+  return true;
+}
+
+// ── POPULATE EDIT FORM SERVER TYPE ──
+function setEditServerType(prefix, serverType, data){
+  // Click the matching button
+  const wrap = document.querySelector(`#${prefix==='edit'?'editModal':'aNew'} .server-type-wrap`);
+  if(!wrap) return;
+  wrap.querySelectorAll('.stype-btn').forEach(b=>{
+    if(b.dataset.type===serverType) b.classList.add('sel'); else b.classList.remove('sel');
+  });
+  if(document.getElementById(`${prefix}ServerType`)) document.getElementById(`${prefix}ServerType`).value=serverType||'';
+  ['java','bedrock','crossplay'].forEach(t=>{
+    const f=document.getElementById(`${prefix}-${t}-fields`);
+    if(f) f.classList.toggle('show',t===serverType);
+  });
+  // Fill values
+  if(serverType==='java'||serverType==='crossplay'){
+    const jEl=document.getElementById(serverType==='java'?`${prefix}JavaIP`:`${prefix}CrossJavaIP`);
+    if(jEl) jEl.value=data.javaIP||'';
+  }
+  if(serverType==='bedrock'||serverType==='crossplay'){
+    const bEl=document.getElementById(serverType==='bedrock'?`${prefix}BedrockIP`:`${prefix}CrossBedrockIP`);
+    const pEl=document.getElementById(serverType==='bedrock'?`${prefix}BedrockPort`:`${prefix}CrossBedrockPort`);
+    if(bEl) bEl.value=data.bedrockIP||'';
+    if(pEl) pEl.value=data.bedrockPort||'';
+  }
+  // Visibility
+  const visVal=data.ipVisibility||'public';
+  const visWrap=document.querySelector(`#${prefix==='edit'?'editModal':'aNew'} .vis-toggle-wrap`);
+  if(visWrap){
+    visWrap.querySelectorAll('.vis-btn').forEach(b=>{
+      b.classList.toggle('sel',b.dataset.vis===visVal);
+    });
+  }
+  if(document.getElementById(`${prefix}IpVisibility`)) document.getElementById(`${prefix}IpVisibility`).value=visVal;
+}
+
+// ── DRAG & DROP HANDLERS ──
+window.dzDragOver = function(e, zoneId){ e.preventDefault(); document.getElementById(zoneId).classList.add('drag-over'); };
+window.dzDragLeave = function(zoneId){ document.getElementById(zoneId).classList.remove('drag-over'); };
+window.dzDrop = function(e, zoneId, previewId, dataId){
+  e.preventDefault();
+  document.getElementById(zoneId).classList.remove('drag-over');
+  const file = e.dataTransfer.files[0];
+  if(file) processImageFile(file, zoneId, previewId, dataId);
+};
+window.dzFile = function(e, zoneId, previewId, dataId){
+  const file = e.target.files[0];
+  if(file) processImageFile(file, zoneId, previewId, dataId);
+};
+function processImageFile(file, zoneId, previewId, dataId){
+  if(!file.type.startsWith('image/')){ showToast('Please upload an image file',true); return; }
+  if(file.size > 2*1024*1024){ showToast('Image too large (max 2MB)',true); return; }
+  const reader = new FileReader();
+  reader.onload = function(ev){
+    const base64 = ev.target.result;
+    document.getElementById(dataId).value = base64;
+    const pv = document.getElementById(previewId);
+    const thumb = pv.querySelector('img'); const nameEl = pv.querySelector('.drop-preview-name');
+    if(thumb) thumb.src = base64; if(nameEl) nameEl.textContent = file.name;
+    pv.style.display = 'flex'; document.getElementById(zoneId).style.display = 'none';
+  };
+  reader.readAsDataURL(file);
+}
+window.dzRemove = function(zoneId, previewId, dataId){
+  document.getElementById(dataId).value = '';
+  document.getElementById(previewId).style.display = 'none';
+  document.getElementById(zoneId).style.display = '';
+  const input = document.getElementById(zoneId).querySelector('input[type=file]');
+  if(input) input.value = '';
+};
+
+// ── CATEGORY PICKERS ──
+window.pickCat1 = function(el){
+  document.querySelectorAll('#addCat1 .cat-chip').forEach(c=>c.classList.remove('sel'));
+  el.classList.add('sel'); document.getElementById('aCat1').value=el.dataset.cat;
+};
+window.pickCat2 = function(el){
+  const already = el.classList.contains('sel');
+  document.querySelectorAll('#addCat2 .cat-chip').forEach(c=>c.classList.remove('sel'));
+  if(!already){ el.classList.add('sel'); document.getElementById('aCat2').value=el.dataset.cat; }
+  else document.getElementById('aCat2').value='';
+};
+window.ePickCat1 = function(el){
+  document.querySelectorAll('#editCat1 .cat-chip').forEach(c=>c.classList.remove('sel'));
+  el.classList.add('sel'); document.getElementById('eCat1').value=el.dataset.cat;
+};
+window.ePickCat2 = function(el){
+  const already = el.classList.contains('sel');
+  document.querySelectorAll('#editCat2 .cat-chip').forEach(c=>c.classList.remove('sel'));
+  if(!already){ el.classList.add('sel'); document.getElementById('eCat2').value=el.dataset.cat; }
+  else document.getElementById('eCat2').value='';
+};
+window.daPickCat1 = function(el){
+  document.querySelectorAll('#daAddCat1 .cat-chip').forEach(c=>c.classList.remove('sel'));
+  el.classList.add('sel'); document.getElementById('daCat1').value=el.dataset.cat;
+};
+window.daPickCat2 = function(el){
+  const already = el.classList.contains('sel');
+  document.querySelectorAll('#daAddCat2 .cat-chip').forEach(c=>c.classList.remove('sel'));
+  if(!already){ el.classList.add('sel'); document.getElementById('daCat2').value=el.dataset.cat; }
+  else document.getElementById('daCat2').value='';
+};
+
+// ── RANK PICKERS ──
+function _pickRank(containerSel, hiddenId, el){
+  document.querySelectorAll(containerSel+' .rank-opt').forEach(r=>r.classList.remove('sel'));
+  el.classList.add('sel');
+  document.getElementById(hiddenId).value = el.dataset.rank;
+}
+window.pickRank = function(el){ _pickRank('#approveModal','approveRank',el); };
+window.ePickRank = function(el){ _pickRank('#editModal','eRank',el); };
+window.daPickRank = function(el){ _pickRank('#aNew','daRank',el); };
+
+// ── CLICK SOUND ──
+window.playClick = function(){
+  try{
+    const ctx = new(window.AudioContext||window.webkitAudioContext)();
+    const now = ctx.currentTime;
+    const osc = ctx.createOscillator(); const oscGain = ctx.createGain();
+    osc.type = 'square'; osc.frequency.setValueAtTime(1200, now); osc.frequency.exponentialRampToValueAtTime(400, now + 0.04);
+    oscGain.gain.setValueAtTime(0.08, now); oscGain.gain.exponentialRampToValueAtTime(0.001, now + 0.05);
+    osc.connect(oscGain); oscGain.connect(ctx.destination); osc.start(now); osc.stop(now + 0.06);
+    const bufLen = Math.floor(ctx.sampleRate * 0.03);
+    const buf = ctx.createBuffer(1, bufLen, ctx.sampleRate); const d = buf.getChannelData(0);
+    for(let i=0;i<bufLen;i++) d[i] = (Math.random()*2-1) * Math.pow(1 - i/bufLen, 3) * 0.4;
+    const noiseGain = ctx.createGain(); noiseGain.gain.value = 0.2;
+    const ns = ctx.createBufferSource(); ns.buffer = buf;
+    ns.connect(noiseGain); noiseGain.connect(ctx.destination); ns.start(now);
+  }catch(e){}
+};
+document.addEventListener('click',e=>{
+  if(e.target.closest('button,a,.tag,.srv-row-card,.featured-big-card,.top-tier-card,.vote-btn-gold,.row-vote-btn,.rbtn,.atab,.tab2,.pg,.cat-chip,.rank-opt,.stype-btn,.vis-btn')) playClick();
+});
+
+// ── THEME ──
+window.toggleTheme=function(){
+  const isLight=document.documentElement.getAttribute('data-theme')==='light';
+  document.documentElement.setAttribute('data-theme',isLight?'':'light');
+  document.getElementById('themeBtn').textContent=isLight?'🌙':'☀️';
+  localStorage.setItem('bmc_theme',isLight?'dark':'light');
+};
+
+// ── TOAST ──
+window.showToast=function(msg,err=false){
+  const t=document.getElementById('toast');
+  t.textContent=msg; t.className='toast show'+(err?' err':'');
+  clearTimeout(t._t); t._t=setTimeout(()=>t.className='toast',3200);
+};
+
+// ── MODALS ──
+window.openM=function(id){
+  if(id==='addModal'&&currentUserData?.banned){ showToast('Your account is banned.',true); return; }
+  document.getElementById(id).classList.add('show');
+  if(id==='profileModal'&&currentUser) loadProfile();
+};
+window.closeM=function(id){ document.getElementById(id).classList.remove('show'); };
+document.querySelectorAll('.overlay').forEach(o=>o.addEventListener('click',e=>{ if(e.target===o) o.classList.remove('show'); }));
+
+// ── AUTH ──
+window.switchTab=function(t){
+  document.getElementById('loginForm').style.display=t==='login'?'':'none';
+  document.getElementById('regForm').style.display=t==='register'?'':'none';
+  document.querySelectorAll('.tab2').forEach((b,i)=>b.classList.toggle('on',(i===0&&t==='login')||(i===1&&t==='register')));
+  setMsg('authMsg','','');
+};
+function setMsg(id,txt,type){ const el=document.getElementById(id); if(!el)return; el.textContent=txt; el.className='msg-box'+(txt?' '+type:''); }
+
+window.doLogin=async function(){
+  const e=document.getElementById('liEmail').value.trim(), p=document.getElementById('liPass').value;
+  if(!e||!p){setMsg('authMsg','Fill all fields','err');return;}
+  try{
+    await signInWithEmailAndPassword(auth,e,p);
+    closeM('authModal'); showToast('Welcome back! 🎉');
+  }catch(er){ setMsg('authMsg',er.message,'err'); }
+};
+window.doRegister=async function(){
+  const name=document.getElementById('rgName').value.trim(), e=document.getElementById('rgEmail').value.trim(), p=document.getElementById('rgPass').value;
+  if(!name||!e||!p){setMsg('authMsg','Fill all fields','err');return;}
+  if(p.length<6){setMsg('authMsg','Password min 6 chars','err');return;}
+  try{
+    const cr=await createUserWithEmailAndPassword(auth,e,p);
+    await updateProfile(cr.user,{displayName:name});
+    await addDoc(collection(db,'users'),{uid:cr.user.uid,name,email:e,role:'user',banned:false,createdAt:serverTimestamp()});
+    closeM('authModal'); showToast('Welcome '+name+'! 🎉');
+  }catch(er){ setMsg('authMsg',er.message,'err'); }
+};
+window.doLogout=async function(){ await signOut(auth); closeM('profileModal'); document.getElementById('bannedOverlay').classList.remove('show'); showToast('Logged out!'); };
+
+onAuthStateChanged(auth,async user=>{
+  currentUser=user;
+  const ab=document.getElementById('authBtns'), um=document.getElementById('userMenu'), adB=document.getElementById('adminBtn');
+  if(user){
+    ab.style.display='none'; um.style.display='flex';
+    document.getElementById('avatarBtn').textContent=(user.displayName||user.email||'U')[0].toUpperCase();
+    isAdmin=ADMIN_EMAILS.includes(user.email);
+    adB.style.display=isAdmin?'':'none';
+    loadUserVotes();
+    // Check ban status
+    const uQ=query(collection(db,'users'),where('uid','==',user.uid));
+    const uSn=await getDocs(uQ);
+    if(!uSn.empty){
+      currentUserData=uSn.docs[0].data();
+      if(currentUserData.banned){ document.getElementById('bannedOverlay').classList.add('show'); }
+    }
+  } else {
+    ab.style.display=''; um.style.display='none'; isAdmin=false; currentUserData=null;
+  }
+});
+
+async function loadUserVotes(){
+  if(!currentUser) return;
+  userVotes={};
+  const q2=query(collection(db,'votes'),where('userId','==',currentUser.uid));
+  const sn=await getDocs(q2);
+  sn.forEach(d=>{ userVotes[d.data().serverId]=d.id; });
+}
+
+// ── HELPERS ──
+function esc(s=''){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+function emoji(cat){ return {survival:'🌲',pvp:'⚔️',skyblock:'🏝️',peaceful:'☮️',lifesteal:'❤️',headsteal:'💀',bedwar:'🛏️',economy:'💰'}[cat]||'🎮'; }
+function gamemodeName(m){ return {survival:'🌲 Survival',creative:'🎨 Creative',hardcore:'💀 Hardcore',adventure:'⚔️ Adventure'}[m]||m||''; }
+function typeBadgeHtml(t){
+  if(!t) return '';
+  const labels={java:'☕ Java',bedrock:'🪨 Bedrock',crossplay:'🔗 Crossplay'};
+  return `<span class="type-badge ${t}">${labels[t]||t}</span>`;
+}
+function modeBadgeHtml(m){
+  if(!m) return '';
+  const labels={survival:'🌲 Survival',creative:'🎨 Creative',hardcore:'💀 Hardcore',adventure:'⚔️ Adventure'};
+  return `<span class="mode-badge ${m}">${labels[m]||m}</span>`;
+}
+function rankCrownEmoji(rank){
+  if(rank===1) return '👑';
+  if(rank===2) return '🥈';
+  if(rank===3) return '🥉';
+  if(rank>=4&&rank<=10) return '⭐';
+  return '';
+}
+function rankColorClass(rank){
+  if(rank===1) return 'rank-1';
+  if(rank===2) return 'rank-2';
+  if(rank===3) return 'rank-3';
+  return '';
+}
+
+// ── BUILD FEATURED BIG CARD (rank 1-3 PREMIUM) ──
+function buildFeatBigCard(s){
+  const voted = userVotes[s.id] !== undefined;
+  const iconInner = s.logo ? `<img src="${esc(s.logo)}" alt="logo" onerror="this.style.display='none';this.nextSibling.style.display='flex'"/><span style="display:none">${emoji(s.category)}</span>` : emoji(s.category);
+  const rank = s.featuredRank || 0;
+  const cat2 = s.category2 ? `<span class="stag ${s.category2||''}">${s.category2}</span>` : '';
+  return `<div class="featured-big-card" onclick="openDetail('${s.id}')">
+    <div class="rank-badge-wrap ${rankColorClass(rank)}">
+      <span class="rank-crown">${rankCrownEmoji(rank)}</span>
+      <span class="rank-num">#${rank}</span>
+    </div>
+    <div class="feat-star-label">★ PREMIUM</div>
+    <div class="fbc-top">
+      <div class="fbc-icon">${iconInner}</div>
+      <div class="fbc-info">
+        <div class="fbc-name">${esc(s.name)}</div>
+        <div style="display:flex;gap:5px;flex-wrap:wrap;margin-bottom:5px">
+          ${typeBadgeHtml(s.serverType)}${modeBadgeHtml(s.gameMode)}
+        </div>
+        <div class="status-badge ${s.status==='online'?'on':'off'}" style="display:inline-flex;margin-bottom:4px">
+          <div class="s-dot${s.status==='online'?' blink':''}"></div>${s.status==='online'?'Online':'Offline'}
+        </div>
+      </div>
+    </div>
+    <div class="fbc-desc">${esc(s.description||'')}</div>
+    <div class="fbc-foot">
+      <div class="fbc-tags">
+        <span class="stag ${s.category||''}">${s.category||'server'}</span>${cat2}
+        ${s.version?`<span class="stag version">${esc(s.version)}</span>`:''}
+      </div>
+      <span class="fbc-max">Max: <strong>${s.maxPlayers||100}</strong></span>
+      <button class="vote-btn-gold${voted?' voted':''}" onclick="voteServer(event,'${s.id}',this)">⭐ <span>${s.votes||0}</span></button>
+    </div>
+  </div>`;
+}
+
+// ── BUILD TOP TIER CARD (rank 4-10) ──
+function buildTopTierCard(s, rank){
+  const voted = userVotes[s.id] !== undefined;
+  const iconInner = s.logo ? `<img src="${esc(s.logo)}" alt="logo" onerror="this.style.display='none';this.nextSibling.style.display='flex'"/><span style="display:none">${emoji(s.category)}</span>` : emoji(s.category);
+  const cat2 = s.category2 ? `<span class="stag ${s.category2||''}">${s.category2}</span>` : '';
+  return `<div class="top-tier-card" onclick="openDetail('${s.id}')">
+    <div class="row-rank" style="color:var(--accent)">⭐#${rank}</div>
+    <div class="row-icon">${iconInner}</div>
+    <div class="row-info">
+      <div class="row-name-line">
+        <div class="row-srv-name">${esc(s.name)}</div>
+        ${typeBadgeHtml(s.serverType)}${modeBadgeHtml(s.gameMode)}
+      </div>
+      <div class="row-desc">${esc(s.description||'')}</div>
+      <div class="row-tags">
+        <span class="stag ${s.category||''}">${s.category||'server'}</span>${cat2}
+        ${s.version?`<span class="stag version">${esc(s.version)}</span>`:''}
+      </div>
+    </div>
+    <div class="row-stats">
+      <div class="row-status ${s.status==='online'?'on':'off'}">
+        <div class="s-dot${s.status==='online'?' blink':''}"></div>${s.status==='online'?'Online':'Offline'}
+      </div>
+      <div class="row-max">Max: <strong>${s.maxPlayers||100}</strong></div>
+      <button class="row-vote-btn${voted?' voted':''}" onclick="voteServer(event,'${s.id}',this)">⭐ <span>${s.votes||0}</span></button>
+    </div>
+  </div>`;
+}
+
+// ── BUILD NORMAL ROW CARD ──
+function buildRowCard(s, rank){
+  const voted = userVotes[s.id] !== undefined;
+  const iconInner = s.logo ? `<img src="${esc(s.logo)}" alt="logo" onerror="this.style.display='none';this.nextSibling.style.display='flex'"/><span style="display:none">${emoji(s.category)}</span>` : emoji(s.category);
+  const rankDisp = `#${rank}`;
+  const cat2 = s.category2 ? `<span class="stag ${s.category2||''}">${s.category2}</span>` : '';
+  return `<div class="srv-row-card" onclick="openDetail('${s.id}')">
+    <div class="row-rank">${rankDisp}</div>
+    <div class="row-icon">${iconInner}</div>
+    <div class="row-info">
+      <div class="row-name-line">
+        <div class="row-srv-name">${esc(s.name)}</div>
+        ${typeBadgeHtml(s.serverType)}${modeBadgeHtml(s.gameMode)}
+      </div>
+      <div class="row-desc">${esc(s.description||'')}</div>
+      <div class="row-tags">
+        <span class="stag ${s.category||''}">${s.category||'server'}</span>${cat2}
+        ${s.version?`<span class="stag version">${esc(s.version)}</span>`:''}
+      </div>
+    </div>
+    <div class="row-stats">
+      <div class="row-status ${s.status==='online'?'on':'off'}">
+        <div class="s-dot${s.status==='online'?' blink':''}"></div>${s.status==='online'?'Online':'Offline'}
+      </div>
+      <div class="row-max">Max: <strong>${s.maxPlayers||100}</strong></div>
+      <button class="row-vote-btn${voted?' voted':''}" onclick="voteServer(event,'${s.id}',this)">⭐ <span>${s.votes||0}</span></button>
+    </div>
+  </div>`;
+}
+
+function renderAll(){
+  const q=document.getElementById('mainSearch').value.toLowerCase();
+  let filtered=allServers.filter(s=>{
+    if(!s.approved) return false;
+    const typeMatch = activeTag==='java'||activeTag==='bedrock'||activeTag==='crossplay'
+      ? s.serverType===activeTag
+      : (activeTag==='all' || s.category===activeTag || s.category2===activeTag);
+    const mq = !q || s.name?.toLowerCase().includes(q) || s.description?.toLowerCase().includes(q);
+    return typeMatch && mq;
+  });
+
+  // PREMIUM (rank 1-3)
+  const premium = [1,2,3].map(r=>allServers.find(s=>s.approved&&s.featuredRank===r)).filter(Boolean);
+  const topSec = document.getElementById('topRankedSection');
+  const topGrid = document.getElementById('topRankedGrid');
+  if(premium.length && activeTag==='all' && !q){
+    topSec.style.display=''; topGrid.innerHTML = premium.map(s=>buildFeatBigCard(s)).join('');
+  } else { topSec.style.display='none'; topGrid.innerHTML=''; }
+
+  // TOP (rank 4-10)
+  const topTier = [4,5,6,7,8,9,10].map(r=>allServers.find(s=>s.approved&&s.featuredRank===r)).filter(Boolean);
+  const tierSec = document.getElementById('topTierSection');
+  const tierGrid = document.getElementById('topTierGrid');
+  if(topTier.length && activeTag==='all' && !q){
+    tierSec.style.display=''; tierGrid.innerHTML = topTier.map(s=>buildTopTierCard(s,s.featuredRank)).join('');
+  } else { tierSec.style.display='none'; tierGrid.innerHTML=''; }
+
+  // NORMAL servers (rank 11+ or no rank)
+  const normals = filtered.filter(s=>!(s.featuredRank>=1&&s.featuredRank<=10));
+  const pages=Math.max(1,Math.ceil(normals.length/PER));
+  if(curPage>pages) curPage=1;
+  const slice=normals.slice((curPage-1)*PER,curPage*PER);
+  const grid=document.getElementById('srvGrid'), noRes=document.getElementById('noRes');
+  if(!slice.length&&!premium.length&&!topTier.length){ grid.innerHTML=''; noRes.style.display=''; }
+  else{ noRes.style.display='none'; grid.innerHTML=slice.map((s,i)=>buildRowCard(s,(curPage-1)*PER+i+1)).join(''); }
+
+  // Pager
+  const pager=document.getElementById('pager');
+  if(pages>1){
+    let h=`<button class="pg" onclick="goPage(${curPage-1})">‹</button>`;
+    for(let i=1;i<=pages;i++) h+=`<button class="pg${i===curPage?' on':''}" onclick="goPage(${i})">${i}</button>`;
+    h+=`<button class="pg" onclick="goPage(${curPage+1})">›</button>`;
+    pager.innerHTML=h;
+  } else pager.innerHTML='';
+
+  // Trending sidebar
+  const top=[...allServers].sort((a,b)=>(b.votes||0)-(a.votes||0)).slice(0,5);
+  const medals=['🥇','🥈','🥉','4','5'];
+  document.getElementById('trendList').innerHTML=top.length?top.map((s,i)=>`
+    <div class="trend-item">
+      <div class="t-rank${i<3?' g':''}">${medals[i]}</div>
+      <div><div class="t-name">${esc(s.name)}</div><div class="t-votes">⭐ ${s.votes||0}</div></div>
+    </div>`).join(''):'<div style="color:var(--dim);font-size:13px">No servers yet</div>';
+
+  // Stats
+  const approved=allServers.filter(s=>s.approved);
+  document.getElementById('sTot').textContent=approved.length;
+  document.getElementById('sVotes').textContent=allServers.reduce((a,s)=>a+(s.votes||0),0);
+  document.getElementById('sPlayers').textContent=allServers.reduce((a,s)=>a+(s.maxPlayers||0),0).toLocaleString();
+  document.getElementById('v121').textContent=approved.filter(s=>s.version?.includes('1.21')).length;
+  document.getElementById('v120').textContent=approved.filter(s=>s.version?.includes('1.20')).length;
+  document.getElementById('v119').textContent=approved.filter(s=>s.version?.includes('1.19')).length;
+  document.getElementById('vBed').textContent=approved.filter(s=>s.serverType==='bedrock').length;
+  document.getElementById('cntJava').textContent=approved.filter(s=>s.serverType==='java').length;
+  document.getElementById('cntBedrock').textContent=approved.filter(s=>s.serverType==='bedrock').length;
+  document.getElementById('cntCrossplay').textContent=approved.filter(s=>s.serverType==='crossplay').length;
+}
+
+window.goPage=function(p){
+  const q=document.getElementById('mainSearch').value.toLowerCase();
+  const normals=allServers.filter(s=>{ if(!s.approved)return false; const mc=activeTag==='all'||s.category===activeTag||s.category2===activeTag||s.serverType===activeTag; const mq=!q||s.name?.toLowerCase().includes(q); return mc&&mq&&!(s.featuredRank>=1&&s.featuredRank<=10); });
+  const pages=Math.max(1,Math.ceil(normals.length/PER));
+  if(p<1||p>pages) return;
+  curPage=p; renderAll(); window.scrollTo({top:0,behavior:'smooth'});
+};
+
+// Live Firestore listener
+onSnapshot(query(collection(db,'servers'),where('approved','==',true)), snap=>{
+  allServers=snap.docs.map(d=>({id:d.id,...d.data()}));
+  allServers.sort((a,b)=>(a.featuredRank||99)-(b.featuredRank||99)||(b.votes||0)-(a.votes||0));
+  renderAll();
+});
+
+window.setTag=function(el){ document.querySelectorAll('.tag').forEach(t=>t.classList.remove('on')); el.classList.add('on'); activeTag=el.dataset.cat; curPage=1; renderAll(); };
+window.filterServers=function(){ curPage=1; renderAll(); };
+
+// ── VOTE ──
+window.voteServer=async function(e,id,btn){
+  e.stopPropagation();
+  if(!currentUser){ showToast('Login to vote!',true); openM('authModal'); return; }
+  if(currentUserData?.banned){ showToast('Banned users cannot vote.',true); return; }
+  try{
+    if(userVotes[id]){
+      const voteDocId = userVotes[id];
+      await deleteDoc(doc(db,'votes',voteDocId));
+      await updateDoc(doc(db,'servers',id),{votes:increment(-1)});
+      delete userVotes[id];
+      btn.classList.remove('voted');
+      const span=btn.querySelector('span');
+      if(span){ span.textContent=Math.max(0,parseInt(span.textContent||0)-1); }
+      showToast('Vote removed!');
+    } else {
+      const voteRef=await addDoc(collection(db,'votes'),{serverId:id,userId:currentUser.uid,at:serverTimestamp()});
+      await updateDoc(doc(db,'servers',id),{votes:increment(1)});
+      userVotes[id]=voteRef.id;
+      btn.classList.add('voted');
+      const span=btn.querySelector('span');
+      if(span){ span.textContent=parseInt(span.textContent||0)+1; }
+      showToast('Vote counted! ⭐');
+    }
+  }catch(er){ showToast('Vote failed',true); }
+};
+
+// ── MCSTATUS API ──
+async function fetchMcStatus(serverType, javaIP, bedrockIP, bedrockPort){
+  const results = {};
+  try{
+    // Try Java
+    if(javaIP && (serverType==='java'||serverType==='crossplay')){
+      const cleanIP = javaIP.replace(':25565','');
+      const r = await fetch(`https://api.mcstatus.io/v2/status/java/${encodeURIComponent(javaIP)}`);
+      if(r.ok){
+        const d=await r.json();
+        results.java={online:d.online,players:d.players,motd:d.motd,version:d.version};
+      }
+    }
+    // Try Bedrock
+    if(bedrockIP && (serverType==='bedrock'||serverType==='crossplay')){
+      const port = bedrockPort||'19132';
+      const r = await fetch(`https://api.mcstatus.io/v2/status/bedrock/${encodeURIComponent(bedrockIP+':'+port)}`);
+      if(r.ok){
+        const d=await r.json();
+        results.bedrock={online:d.online,players:d.players,motd:d.motd,version:d.version};
+      }
+    }
+  }catch(e){ console.warn('MCStatus fetch failed',e); }
+  return results;
+}
+
+function renderMotd(motd){
+  if(!motd) return '<span style="color:var(--dim);font-size:12px">No MOTD data</span>';
+  let text = motd.clean || motd.raw || '';
+  // Strip color codes
+  text = text.replace(/§[0-9a-fklmnor]/gi,'');
+  return esc(text);
+}
+
+// ── DETAIL MODAL ──
+window.openDetail=async function(id){
+  const sn=await getDoc(doc(db,'servers',id)); if(!sn.exists()) return;
+  const s={id:sn.id,...sn.data()};
+  const voted=userVotes[id]!==undefined;
+  const cat2 = s.category2 ? `<span class="stag ${s.category2||''}">${s.category2}</span>` : '';
+  const ipPublic = s.ipVisibility!=='private';
+
+  // Rank info
+  let rankInfo='';
+  const r=s.featuredRank||0;
+  if(r>=1&&r<=3) rankInfo=`<span style="margin-left:6px">${rankCrownEmoji(r)} <span style="color:${r===1?'var(--gold)':r===2?'var(--silver)':'var(--leather)'}">Premium #${r}</span></span>`;
+  else if(r>=4&&r<=10) rankInfo=`<span style="margin-left:6px;color:var(--accent)">⭐ Top #${r}</span>`;
+
+  document.getElementById('detailBody').innerHTML=`
+    ${s.logo?`<img src="${esc(s.logo)}" style="width:100%;max-height:120px;border-radius:10px;object-fit:cover;border:1px solid var(--border);margin-bottom:14px" onerror="this.style.display='none'"/>`:''}
+    <h2 style="font-family:'Press Start 2P',monospace;font-size:10px;color:var(--accent);margin-bottom:12px">${esc(s.name)}</h2>
+    <div style="display:flex;align-items:center;gap:7px;flex-wrap:wrap;margin-bottom:14px">
+      <div class="status-badge ${s.status==='online'?'on':'off'}"><div class="s-dot${s.status==='online'?' blink':''}"></div>${s.status==='online'?'Online':'Offline'}</div>
+      ${typeBadgeHtml(s.serverType)}${modeBadgeHtml(s.gameMode)}
+      ${rankInfo}
+    </div>
+
+    ${s.description?`<p style="font-size:14px;color:var(--dim);line-height:1.6;margin-bottom:14px">${esc(s.description)}</p>`:''}
+
+    <div class="info-grid">
+      <div class="info-cell"><div class="info-cell-label">Platform</div><div class="info-cell-val">${typeBadgeHtml(s.serverType)||'—'}</div></div>
+      <div class="info-cell"><div class="info-cell-label">Game Mode</div><div class="info-cell-val">${modeBadgeHtml(s.gameMode)||'—'}</div></div>
+      <div class="info-cell"><div class="info-cell-label">Version</div><div class="info-cell-val">${esc(s.version||'—')}</div></div>
+      <div class="info-cell"><div class="info-cell-label">Max Players</div><div class="info-cell-val" style="color:var(--accent);">${s.maxPlayers||100}</div></div>
+    </div>
+
+    <div style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--dim);margin:14px 0 7px">📂 Categories</div>
+    <div style="display:flex;gap:5px;flex-wrap:wrap;margin-bottom:14px">
+      ${s.category?`<span class="stag ${s.category}">${emoji(s.category)} ${s.category}</span>`:''}
+      ${cat2}
+    </div>
+
+    <div style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--dim);margin-bottom:7px">🖧 Server IP</div>
+    <div id="detailIpSection">
+      ${ipPublic ? buildIpSection(s) : `<div class="ip-hidden-box"><span>🔒 Server IP is private</span><span style="font-size:11px;color:var(--dim)">Admin set to private</span></div>`}
+    </div>
+
+    <div style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--dim);margin:14px 0 7px">📡 Live Status (MCSTATUS)</div>
+    <div id="liveStatusArea"><div class="motd-loading"><div class="loader"></div> Fetching live data…</div></div>
+
+    <div class="detail-links">
+      ${s.discord?`<a class="detail-link dc" href="${esc(s.discord)}" target="_blank">💬 Discord</a>`:''}
+      ${s.facebook?`<a class="detail-link fb" href="${esc(s.facebook)}" target="_blank">📘 Facebook</a>`:''}
+    </div>
+    <div style="margin-top:14px">
+      <button class="vote-btn-gold${voted?' voted':''}" style="padding:9px 16px;font-size:14px;width:100%;justify-content:center" onclick="voteServer(event,'${id}',this)">⭐ ${voted?'Remove Vote':'Vote'} (${s.votes||0})</button>
+    </div>`;
+
+  openM('detailModal');
+
+  // Fetch live status
+  if(s.javaIP||s.bedrockIP){
+    const live = await fetchMcStatus(s.serverType, s.javaIP, s.bedrockIP, s.bedrockPort);
+    renderLiveStatus(live, s.serverType);
+  } else {
+    document.getElementById('liveStatusArea').innerHTML='<div style="color:var(--dim);font-size:13px">No IP configured for live status.</div>';
+  }
+};
+
+function buildIpSection(s){
+  let html='<div class="detail-ip-section">';
+  const type=s.serverType;
+  if(s.javaIP&&(type==='java'||type==='crossplay')){
+    html+=`<div class="detail-ip-row"><span class="detail-ip-label">☕ Java IP</span><span class="detail-ip-val">${esc(s.javaIP)}</span><button class="ip-copy" onclick="copyText('${esc(s.javaIP)}')">Copy</button></div>`;
+  }
+  if(s.bedrockIP&&(type==='bedrock'||type==='crossplay')){
+    html+=`<div class="detail-ip-row"><span class="detail-ip-label">🪨 Bedrock IP</span><span class="detail-ip-val">${esc(s.bedrockIP)}</span><button class="ip-copy" onclick="copyText('${esc(s.bedrockIP)}')">Copy</button></div>`;
+    html+=`<div class="detail-ip-row"><span class="detail-ip-label">🪨 Bedrock Port</span><span class="detail-ip-val">${esc(s.bedrockPort||'19132')}</span><button class="ip-copy" onclick="copyText('${esc(s.bedrockPort||'19132')}')">Copy</button></div>`;
+  }
+  if(!s.javaIP&&!s.bedrockIP){
+    html+='<div style="color:var(--dim);font-size:13px;padding:8px 0">No IP information available.</div>';
+  }
+  html+='</div>';
+  return html;
+}
+
+function renderLiveStatus(live, serverType){
+  const el=document.getElementById('liveStatusArea');
+  if(!el) return;
+  let html='';
+  const renderPlatform=(data,label)=>{
+    if(!data) return '';
+    const online=data.online;
+    const cur=data.players?.online||0, max=data.players?.max||0;
+    const pct=max>0?Math.min(100,Math.round(cur/max*100)):0;
+    const motdText=renderMotd(data.motd);
+    return `<div style="margin-bottom:12px">
+      <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--dim);margin-bottom:5px">${label}</div>
+      <div class="live-players">
+        <div class="s-dot${online?' blink':''}" style="background:${online?'var(--green)':'var(--red)'}"></div>
+        <span style="font-size:13px;font-weight:700;color:${online?'var(--green)':'var(--red)'}">${online?'Online':'Offline'}</span>
+        ${online?`<div class="live-bar-wrap"><div class="live-bar" style="width:${pct}%"></div></div>
+        <span class="live-count">${cur}/${max}</span>`:''}
+      </div>
+      ${online&&motdText?`<div class="motd-box">${motdText}</div>`:''}
+      ${online&&data.version?`<div style="font-size:12px;color:var(--dim);margin-top:4px">Version: <strong style="color:var(--text)">${esc(data.version?.name_clean||data.version||'')}</strong></div>`:''}
+    </div>`;
+  };
+  if(live.java) html+=renderPlatform(live.java,'☕ Java Status');
+  if(live.bedrock) html+=renderPlatform(live.bedrock,'🪨 Bedrock Status');
+  if(!live.java&&!live.bedrock) html='<div style="color:var(--dim);font-size:13px">Could not fetch live data. Server may be offline or IP not set.</div>';
+  el.innerHTML=html||'<div style="color:var(--dim);font-size:13px">No live data available.</div>';
+}
+
+window.copyText=function(t){ navigator.clipboard.writeText(t).then(()=>showToast('Copied! 📋')).catch(()=>showToast('Copy failed',true)); };
+
+// ── SUBMIT SERVER ──
+window.submitServer=async function(){
+  if(!currentUser){ showToast('Login first!',true); closeM('addModal'); openM('authModal'); return; }
+  if(currentUserData?.banned){ showToast('Banned users cannot submit servers.',true); return; }
+  const name=document.getElementById('aN').value.trim();
+  const desc=document.getElementById('aD').value.trim();
+  const cat1=document.getElementById('aCat1').value;
+  const gameMode=document.getElementById('aGameMode').value;
+  const ipData=getIpData('a');
+  if(!name||!desc){ setMsg('addMsg','Fill required fields','err'); return; }
+  if(!cat1){ setMsg('addMsg','Select a primary category','err'); return; }
+  if(!validateIpData(ipData,'addMsg')) return;
+  setMsg('addMsg','','');
+  const logo=document.getElementById('aLgData').value||'';
+  try{
+    await addDoc(collection(db,'servers'),{
+      name, description:desc,
+      serverType:ipData.serverType,
+      ipVisibility:ipData.ipVisibility,
+      javaIP:ipData.javaIP||'',
+      bedrockIP:ipData.bedrockIP||'',
+      bedrockPort:ipData.bedrockPort||'',
+      gameMode:gameMode||'',
+      category:cat1, category2:document.getElementById('aCat2').value||'',
+      maxPlayers:parseInt(document.getElementById('aMx').value)||100,
+      version:document.getElementById('aVr').value,
+      discord:document.getElementById('aDc').value,
+      facebook:document.getElementById('aFb').value,
+      logo, votes:0, online:0, status:'offline', featured:false, approved:false, featuredRank:0,
+      submittedBy:currentUser.uid, createdAt:serverTimestamp()
+    });
+    setMsg('addMsg','Submitted! Waiting for admin approval ✅','ok');
+    setTimeout(()=>closeM('addModal'),2000);
+  }catch(er){ setMsg('addMsg',er.message,'err'); }
+};
+
+// ── PROFILE ──
+async function loadProfile(){
+  if(!currentUser) return;
+  document.getElementById('profAv').textContent=(currentUser.displayName||'U')[0].toUpperCase();
+  document.getElementById('profName').textContent=currentUser.displayName||'Player';
+  document.getElementById('profEmail').textContent=currentUser.email;
+  const b=document.getElementById('profBadge');
+  if(currentUserData?.banned){b.textContent='🚫 Banned';b.className='prof-badge banned';}
+  else if(isAdmin){b.textContent='⚙️ Admin';b.className='prof-badge admin';}
+  else{b.textContent='🎮 Player';b.className='prof-badge user';}
+  const el=document.getElementById('myServersList');
+  const q2=query(collection(db,'servers'),where('submittedBy','==',currentUser.uid));
+  const sn=await getDocs(q2);
+  if(sn.empty){el.innerHTML='<div style="color:var(--dim);font-size:13px;text-align:center;padding:12px">No servers submitted yet</div>';return;}
+  el.innerHTML=sn.docs.map(d=>{const s=d.data();return`<div class="srv-row" style="margin-bottom:8px"><div class="srv-row-info"><div class="row-name">${esc(s.name)}</div><div class="row-sub">${s.approved?'✅ Approved':'⏳ Pending'} · ${s.serverType||'Unknown type'}</div></div></div>`;}).join('');
+}
+
+// ── ADMIN ──
+window.openAdmin=function(){
+  if(!isAdmin){showToast('Access denied!',true);return;}
+  document.getElementById('adminPanel').classList.add('show');
+  document.getElementById('adminWho').textContent='Logged in: '+currentUser.email;
+  loadPending(); loadAllServers(); loadUsers();
+  const dc=localStorage.getItem('bmc_discord'), fb=localStorage.getItem('bmc_facebook');
+  if(dc) document.getElementById('cfDc').value=dc;
+  if(fb) document.getElementById('cfFb').value=fb;
+  loadAdminEmails();
+};
+window.closeAdmin=function(){ document.getElementById('adminPanel').classList.remove('show'); };
+window.aTab=function(el,sec){
+  document.querySelectorAll('.atab').forEach(t=>t.classList.remove('on'));
+  document.querySelectorAll('.asec').forEach(s=>s.classList.remove('show'));
+  el.classList.add('on'); document.getElementById(sec).classList.add('show');
+};
+
+async function loadPending(){
+  const el=document.getElementById('pendList');
+  const q2=query(collection(db,'servers'),where('approved','==',false));
+  const sn=await getDocs(q2);
+  if(sn.empty){el.innerHTML='<div style="color:var(--dim);padding:18px;text-align:center">No pending servers 🎉</div>';return;}
+  el.innerHTML=sn.docs.map(d=>{const s=d.data();return`
+    <div class="srv-row"><div class="srv-row-info">
+      <div class="row-name">${esc(s.name)} ${typeBadgeHtml(s.serverType)}</div>
+      <div class="row-sub">Cat: ${s.category||''}${s.category2?' + '+s.category2:''} · Mode: ${s.gameMode||'—'}</div>
+      <div class="row-desc">${esc((s.description||'').substring(0,80))}…</div>
+    </div><div class="row-btns">
+      <button class="rbtn approve" onclick="openApproveModal('${d.id}','${esc(s.name)}')">✅ Approve</button>
+      <button class="rbtn decline" onclick="declineServer('${d.id}')">❌ Decline</button>
+      <button class="rbtn edit" onclick="openEdit('${d.id}')">✏️ Edit</button>
+    </div></div>`;}).join('');
+}
+
+async function loadAllServers(){
+  const el=document.getElementById('allList');
+  const sn=await getDocs(collection(db,'servers'));
+  if(sn.empty){el.innerHTML='<div style="color:var(--dim);padding:18px;text-align:center">No servers yet</div>';return;}
+  el.innerHTML=sn.docs.map(d=>{const s=d.data();
+    const r=s.featuredRank||0;
+    let rankBadge='';
+    if(r>=1&&r<=3) rankBadge=['👑','🥈','🥉'][r-1];
+    else if(r>=4&&r<=10) rankBadge=`⭐#${r}`;
+    return`<div class="srv-row"><div class="srv-row-info">
+      <div class="row-name">${esc(s.name)} ${rankBadge} ${typeBadgeHtml(s.serverType)} ${s.approved?'✅':'⏳'}</div>
+      <div class="row-sub">Mode:${s.gameMode||'—'} · ⭐${s.votes||0} · Max:${s.maxPlayers||100} · IP:${s.ipVisibility||'public'}</div>
+    </div><div class="row-btns">
+      <button class="rbtn edit" onclick="openEdit('${d.id}')">✏️ Edit</button>
+      <button class="rbtn del" onclick="delServer('${d.id}')">🗑️ Delete</button>
+    </div></div>`;}).join('');
+}
+
+async function loadUsers(){
+  const el=document.getElementById('usersList');
+  const sn=await getDocs(collection(db,'users'));
+  if(sn.empty){el.innerHTML='<div style="color:var(--dim);padding:18px;text-align:center">No users yet</div>';return;}
+  el.innerHTML=sn.docs.map(d=>{const u=d.data();const banned=u.banned||false;return`
+    <div class="srv-row">
+      <div class="srv-row-info">
+        <div class="row-name">${esc(u.name||'?')} ${banned?'<span class="prof-badge banned" style="font-size:10px;display:inline-block">🚫 Banned</span>':''}</div>
+        <div class="row-sub">${esc(u.email||'')} · Joined: ${u.createdAt?.toDate?.()?.toLocaleDateString()||'?'}</div>
+      </div>
+      <div class="row-btns">
+        ${banned
+          ? `<button class="rbtn unban" onclick="banUser('${d.id}',false)">✅ Unban</button>`
+          : `<button class="rbtn ban" onclick="banUser('${d.id}',true)">🚫 Ban</button>`}
+      </div>
+    </div>`;}).join('');
+}
+
+// ── BAN USER ──
+window.banUser=async function(docId, shouldBan){
+  if(!isAdmin){showToast('Admin only',true);return;}
+  const action=shouldBan?'ban':'unban';
+  if(!confirm(`${action} this user?`)) return;
+  try{
+    await updateDoc(doc(db,'users',docId),{banned:shouldBan});
+    showToast(shouldBan?'User banned 🚫':'User unbanned ✅');
+    loadUsers();
+  }catch(er){ showToast('Error: '+er.message,true); }
+};
+
+// Open approve modal
+window.openApproveModal=function(id,name){
+  document.getElementById('approveServerId').value=id;
+  document.getElementById('approveServerName').textContent='Server: '+name;
+  document.getElementById('approveRank').value='0';
+  document.querySelectorAll('#approveModal .rank-opt').forEach(r=>r.classList.remove('sel'));
+  document.querySelector('#approveModal .rank-none-opt').classList.add('sel');
+  openM('approveModal');
+};
+
+window.doApprove=async function(){
+  const id=document.getElementById('approveServerId').value;
+  const rank=parseInt(document.getElementById('approveRank').value)||0;
+  const isPremium=rank>=1&&rank<=3;
+  const isTop=rank>=4&&rank<=10;
+  try{
+    await updateDoc(doc(db,'servers',id),{approved:true,featuredRank:rank,featured:isPremium});
+    showToast('Approved! ✅'+(rank>0?' Rank #'+rank+' assigned':''));
+    closeM('approveModal'); loadPending(); loadAllServers();
+  }catch(er){ showToast('Error: '+er.message,true); }
+};
+
+window.declineServer=async function(id){ if(!confirm('Delete this server?')) return; await deleteDoc(doc(db,'servers',id)); showToast('Declined.'); loadPending(); loadAllServers(); };
+window.delServer=async function(id){ if(!confirm('Delete permanently?')) return; await deleteDoc(doc(db,'servers',id)); showToast('Deleted.'); loadAllServers(); };
+
+window.openEdit=async function(id){
+  const sn=await getDoc(doc(db,'servers',id)); if(!sn.exists()) return;
+  const s=sn.data();
+  document.getElementById('eId').value=id;
+  document.getElementById('eN').value=s.name||'';
+  document.getElementById('eD').value=s.description||'';
+  document.getElementById('eGameMode').value=s.gameMode||'';
+  // Server type
+  setEditServerType('edit', s.serverType||'java', s);
+  // Categories
+  document.querySelectorAll('#editCat1 .cat-chip').forEach(c=>{ c.classList.toggle('sel',c.dataset.cat===s.category); });
+  document.getElementById('eCat1').value=s.category||'';
+  document.querySelectorAll('#editCat2 .cat-chip').forEach(c=>{ c.classList.toggle('sel',c.dataset.cat===s.category2); });
+  document.getElementById('eCat2').value=s.category2||'';
+  document.getElementById('eMx').value=s.maxPlayers||100;
+  document.getElementById('eVr').value=s.version||'';
+  document.getElementById('eDc').value=s.discord||'';
+  document.getElementById('eFb').value=s.facebook||'';
+  document.getElementById('eLgOld').value=s.logo||'';
+  dzRemove('editDropZone','editLogoPreview','eLgData');
+  if(s.logo){ document.getElementById('eLgData').value=''; document.getElementById('editDropZone').querySelector('.dz-sub').textContent='Current logo saved · Drop new to replace'; }
+  // Rank
+  const rank=s.featuredRank||0;
+  document.getElementById('eRank').value=rank;
+  document.querySelectorAll('#editModal .rank-opt').forEach(r=>{ r.classList.toggle('sel',parseInt(r.dataset.rank)===rank); });
+  document.getElementById('eSt').value=s.status||'offline';
+  openM('editModal');
+};
+
+window.saveEdit=async function(){
+  const id=document.getElementById('eId').value;
+  const newLogo=document.getElementById('eLgData').value;
+  const oldLogo=document.getElementById('eLgOld').value;
+  const logoVal=newLogo||oldLogo;
+  const rank=parseInt(document.getElementById('eRank').value)||0;
+  const ipData=getIpData('e');
+  try{
+    await updateDoc(doc(db,'servers',id),{
+      name:document.getElementById('eN').value,
+      description:document.getElementById('eD').value,
+      gameMode:document.getElementById('eGameMode').value,
+      serverType:ipData.serverType||'java',
+      ipVisibility:ipData.ipVisibility||'public',
+      javaIP:ipData.javaIP||'',
+      bedrockIP:ipData.bedrockIP||'',
+      bedrockPort:ipData.bedrockPort||'',
+      category:document.getElementById('eCat1').value,
+      category2:document.getElementById('eCat2').value||'',
+      maxPlayers:parseInt(document.getElementById('eMx').value)||100,
+      version:document.getElementById('eVr').value,
+      discord:document.getElementById('eDc').value,
+      facebook:document.getElementById('eFb').value,
+      logo:logoVal,
+      featuredRank:rank,
+      featured:rank>=1&&rank<=3,
+      status:document.getElementById('eSt').value,
+      approved:true
+    });
+    setMsg('editMsg','Saved! ✅','ok');
+    setTimeout(()=>{ closeM('editModal'); loadPending(); loadAllServers(); },1100);
+  }catch(er){ setMsg('editMsg',er.message,'err'); }
+};
+
+window.adminAddServer=async function(){
+  const name=document.getElementById('daN').value.trim();
+  const cat1=document.getElementById('daCat1').value;
+  const gameMode=document.getElementById('daGameMode').value;
+  const ipData=getIpData('da');
+  if(!name){ setMsg('adminAddMsg','Name required','err'); return; }
+  if(!cat1){ setMsg('adminAddMsg','Select primary category','err'); return; }
+  if(!validateIpData(ipData,'adminAddMsg')) return;
+  const logo=document.getElementById('daLgData').value||'';
+  const rank=parseInt(document.getElementById('daRank').value)||0;
+  try{
+    await addDoc(collection(db,'servers'),{
+      name,
+      serverType:ipData.serverType,
+      ipVisibility:ipData.ipVisibility,
+      javaIP:ipData.javaIP||'',
+      bedrockIP:ipData.bedrockIP||'',
+      bedrockPort:ipData.bedrockPort||'',
+      description:document.getElementById('daD').value,
+      gameMode:gameMode||'',
+      category:cat1, category2:document.getElementById('daCat2').value||'',
+      maxPlayers:parseInt(document.getElementById('daMx').value)||100,
+      version:document.getElementById('daVr').value,
+      discord:document.getElementById('daDc').value,
+      facebook:document.getElementById('daFb').value,
+      logo, featuredRank:rank, featured:rank>=1&&rank<=3,
+      votes:0, online:0, status:'online', approved:true,
+      submittedBy:currentUser?.uid||'admin', createdAt:serverTimestamp()
+    });
+    setMsg('adminAddMsg','Server added! ✅','ok');
+    ['daN','daD','daMx','daVr','daDc','daFb'].forEach(i=>document.getElementById(i).value='');
+    dzRemove('daDropZone','daLogoPreview','daLgData');
+  }catch(er){ setMsg('adminAddMsg',er.message,'err'); }
+};
+
+// Colors
+window.liveColors=function(){
+  const r=document.documentElement.style;
+  r.setProperty('--accent',document.getElementById('cA').value);
+  r.setProperty('--accent2',document.getElementById('cA2').value);
+  r.setProperty('--bg',document.getElementById('cBg').value);
+  r.setProperty('--panel',document.getElementById('cPn').value);
+};
+window.saveColors=function(){
+  localStorage.setItem('bmc_colors',JSON.stringify({a:document.getElementById('cA').value,a2:document.getElementById('cA2').value,bg:document.getElementById('cBg').value,pn:document.getElementById('cPn').value}));
+  showToast('Colors saved! 🎨');
+};
+window.resetColors=function(){
+  localStorage.removeItem('bmc_colors');
+  ['--accent','--accent2','--bg','--panel'].forEach(v=>document.documentElement.style.removeProperty(v));
+  showToast('Colors reset!');
+};
+
+// Community links
+window.saveCommunityLinks=function(){
+  const dc=document.getElementById('cfDc').value.trim(), fb=document.getElementById('cfFb').value.trim();
+  if(dc){ localStorage.setItem('bmc_discord',dc); const el=document.getElementById('discordLink'); el.href=dc; el.style.display='flex'; document.getElementById('commPlaceholder').style.display='none'; }
+  if(fb){ localStorage.setItem('bmc_facebook',fb); const el=document.getElementById('facebookLink'); el.href=fb; el.style.display='flex'; document.getElementById('commPlaceholder').style.display='none'; }
+  showToast('Links saved! 🔗');
+};
+
+// Logo
+window.saveLogo=function(){
+  const data=document.getElementById('cfLogoData').value;
+  if(!data){showToast('Please upload a logo image',true);return;}
+  localStorage.setItem('bmc_logo',data);
+  const img=document.getElementById('logoImg'); img.src=data; img.style.display='block'; document.getElementById('logoFallback').style.display='none';
+  showToast('Logo saved! 🖼️');
+};
+
+// Admin emails
+function loadAdminEmails(){
+  document.getElementById('adminEmailList').innerHTML=ADMIN_EMAILS.map(e=>`
+    <div style="display:flex;align-items:center;justify-content:space-between;padding:7px 0;border-bottom:1px solid var(--border);font-size:13px">
+      <span>${e}</span>
+      <button class="rbtn del" onclick="removeAdmin('${e}')">Remove</button>
+    </div>`).join('');
+}
+window.addAdminEmail=function(){
+  const e=document.getElementById('newAdminE').value.trim();
+  if(!e||!e.includes('@')){showToast('Invalid email',true);return;}
+  if(!ADMIN_EMAILS.includes(e)) ADMIN_EMAILS.push(e);
+  localStorage.setItem('bmc_admins',JSON.stringify(ADMIN_EMAILS));
+  document.getElementById('newAdminE').value='';
+  loadAdminEmails(); showToast('Admin added!');
+};
+window.removeAdmin=function(e){
+  ADMIN_EMAILS=ADMIN_EMAILS.filter(x=>x!==e);
+  localStorage.setItem('bmc_admins',JSON.stringify(ADMIN_EMAILS));
+  loadAdminEmails(); showToast('Admin removed.');
+};
+</script>
+<script>
+document.addEventListener('change',e=>{
+  if(e.target && e.target.id && e.target.id.toLowerCase().includes('servertype')){
+    const v = e.target.value;
+
+    document.querySelectorAll('[data-java-field], .java-field').forEach(el=>{
+      el.style.display = (v==='java'||v==='crossplay') ? '' : 'none';
+    });
+
+    document.querySelectorAll('[data-bedrock-field], .bedrock-field').forEach(el=>{
+      el.style.display = (v==='bedrock'||v==='crossplay') ? '' : 'none';
+    });
+  }
+});
+</script>
+
+<script>
+async function mcStatus(ip){
+ try{
+  const r=await fetch("https://api.mcsrvstat.us/2/"+ip);
+  return await r.json();
+ }catch{ return {online:false}; }
+}
+
+async function initServerCards(){
+ const cards=document.querySelectorAll('[data-ip]');
+ for(const card of cards){
+  const ip=card.dataset.ip;
+  let row=document.createElement("div");
+  row.className="status-row";
+  row.innerHTML='<span class="status-dot offline"></span><span class="status-text">Checking...</span>';
+  card.appendChild(row);
+  let players=document.createElement("div");
+  players.className="players";
+  players.innerText="Loading players...";
+  card.appendChild(players);
+
+  const data=await mcStatus(ip);
+  const dot=row.querySelector(".status-dot");
+  const text=row.querySelector(".status-text");
+  if(data.online){
+    dot.classList.replace("offline","online");
+    text.innerText="Online";
+    players.innerText=data.players.online+" / "+data.players.max+" players";
+  }else{
+    text.innerText="Offline";
+    players.innerText="Server Offline";
+  }
+ }
+}
+window.addEventListener("load",initServerCards);
+</script>
+
+
+<script>
+const DEFAULT_BANNER="https://i.imgur.com/8bKQ8bA.jpeg"; // minecraft fallback
+
+function applyBanner(card,banner){
+ card.style.backgroundImage=`url(${banner||DEFAULT_BANNER})`;
+}
+
+/* SAVE SERVER EDIT FIX USING LOCAL STORAGE */
+function saveServers(servers){
+ localStorage.setItem("servers",JSON.stringify(servers));
+}
+function loadServers(){
+ return JSON.parse(localStorage.getItem("servers")||"[]");
+}
+
+/* AUTO APPLY BANNERS + RESTORE DATA */
+window.addEventListener("load",()=>{
+ document.querySelectorAll("[data-ip]").forEach(card=>{
+   const banner=card.dataset.banner;
+   applyBanner(card,banner);
+ });
+
+ const saved=loadServers();
+ saved.forEach(s=>{
+   const card=document.querySelector(`[data-ip="${s.ip}"]`);
+   if(card){
+     card.dataset.banner=s.banner||"";
+     applyBanner(card,s.banner);
+   }
+ });
+});
+
+/* GENERIC FORM SUPPORT (ADMIN / ADD SERVER) */
+document.addEventListener("submit",e=>{
+ if(!e.target.matches(".server-form")) return;
+ e.preventDefault();
+ const ip=e.target.querySelector("[name=ip]").value;
+ const banner=e.target.querySelector("[name=banner]").value;
+ const servers=loadServers();
+ const index=servers.findIndex(s=>s.ip===ip);
+ if(index>-1) servers[index]={ip,banner};
+ else servers.push({ip,banner});
+ saveServers(servers);
+ alert("Server saved successfully!");
+});
+</script>
+
+</body>
+</html>
